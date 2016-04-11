@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * @author Sébastien
  *
@@ -5,7 +7,7 @@
 public class Observation {
 	private int ID;
 	private int priority;
-	private Night[] nuits;
+	private LinkedList<Night> nuits;
 	
 	/**
 	 * Constructor of an observation (AKA a star to study)
@@ -13,7 +15,7 @@ public class Observation {
 	 * @param priority: priority of the observation
 	 * @param nuits: nights when the observation is feasible
 	 */
-	public Observation(int ID, int priority, Night[] nuits) {
+	public Observation(int ID, int priority, LinkedList<Night> nuits) {
 		this.ID = ID;
 		this.priority = priority;
 		this.nuits = nuits;
@@ -40,7 +42,7 @@ public class Observation {
 	 * @return the number of night when the observation is feasible
 	 */
 	public int getNumberOfNight() {
-		return this.nuits.length;
+		return this.nuits.size();
 	}
 	
 	/**
@@ -49,6 +51,6 @@ public class Observation {
 	 * @return the night specified
 	 */
 	public Night getNight(int ID) {
-		return this.nuits[ID];
+		return this.nuits.get(ID);
 	}
 }

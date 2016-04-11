@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * @author Sébastien
  *
@@ -19,7 +21,7 @@ public class Tools {
 	 * @param data: an array with the data for all night concerning our observation
 	 * @return the finalized observation
 	 */
-	public static Observation stringhandler_observation(String line, Night[] data) {
+	public static Observation stringhandler_observation(String line, LinkedList<Night> data) {
 		int id = Integer.parseInt(line.substring(line.indexOf(" ")+1, line.indexOf("p")-1));
 		int priority = Integer.parseInt(line.substring(line.indexOf(":")+2, line.length()));
 		return new Observation(id, priority, data);

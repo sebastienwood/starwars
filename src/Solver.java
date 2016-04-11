@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -35,9 +36,12 @@ public class Solver {
 			//then we initialize each observation AKA star
 			for(int i = 0;i<nb_obs;i++) {
 				String obs_data = in.nextLine();
-				Night[] night_data = new Night[nb_night];
+				LinkedList<Night> night_data = new LinkedList<Night>();
 				for(int j = 0; j<nb_night;j++) {
-					night_data[j] = Tools.stringhandler_night(in.nextLine());
+					Night nuit = Tools.stringhandler_night(in.nextLine());
+					if(nuit.getDebut() != 0 && nuit.getFin() != 0) {
+						night_data.add(nuit);
+					}
 				}
 				this.etoiles[i] = Tools.stringhandler_observation(obs_data, night_data);
 			}
