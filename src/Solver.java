@@ -10,7 +10,6 @@ import java.util.Scanner;
  */
 public class Solver {
 
-	private Telescope tel;
 	private Observation[] etoiles;
 	
 	/**
