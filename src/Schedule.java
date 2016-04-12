@@ -9,16 +9,12 @@ public class Schedule {
 
 	private LinkedList<Plan> planning;
 	
-	public Schedule() {
-		this.planning = new LinkedList<Plan>();
-	}
-	
 	/**
-	 * Add an observation to the planning
-	 * @param o: the observation to add
+	 * Constructor for a schedule
+	 * @param plans: a linkedlist of Plan
 	 */
-	public void add(Plan p) {
-		this.planning.add(p);
+	public Schedule(LinkedList<Plan> plans) {
+		this.planning = plans;
 	}
 	
 	/**

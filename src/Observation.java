@@ -1,4 +1,6 @@
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * @author Sébastien
@@ -38,19 +40,43 @@ public class Observation {
 	}
 	
 	/**
-	 * Accessor to the number of night
-	 * @return the number of night when the observation is feasible
+	 * Test if the observation is feasible a specified night
+	 * @param night: the night we want to test
+	 * @return true if feasible
 	 */
-	public int getNumberOfNight() {
-		return this.nuits.size();
+	public boolean feasibleAt(int night) {
+		Iterator<Night> i = nuits.iterator();
+		while(i.hasNext()) {
+			Night n = i.next();
+			if(n.getID() == night) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * Accessor to a night
-	 * @param ID: index of the night 
-	 * @return the night specified
+	 * @param night: number of the night 
+	 * @return the night specified, null if non feasible
 	 */
-	public Night getNight(int ID) {
-		return this.nuits.get(ID);
+	public Night getNight(int night) {
+		Iterator<Night> i = nuits.iterator();
+		while(i.hasNext()) {
+			Night n = i.next();
+			if(n.getID() == night) {
+				return n;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Generate a random plan for this observation
+	 * @return a random plan
+	 */
+	public Plan randomPlan() {
+		Random rand = new Random();
+		return new Plan(this, nuits.get(rand.nextInt(nuits.size())));
 	}
 }
