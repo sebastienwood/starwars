@@ -67,6 +67,9 @@ public class Observation {
 			if(n.getID() == night) {
 				return n;
 			}
+			if(n.getID() > night) {
+				return null;
+			}
 		}
 		return null;
 	}

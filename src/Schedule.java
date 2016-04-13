@@ -4,17 +4,38 @@ import java.util.LinkedList;
 /**
  * @author Sébastien
  * A class to represent a telescope schedule
+ * AKA Individual in Genetic algorithm
  */
 public class Schedule {
 
-	private LinkedList<Plan> planning;
+	protected int ID;
+	protected LinkedList<Plan> planning;
+	protected int value;
 	
 	/**
 	 * Constructor for a schedule
 	 * @param plans: a linkedlist of Plan
 	 */
-	public Schedule(LinkedList<Plan> plans) {
+	public Schedule(int ID, LinkedList<Plan> plans) {
+		this.ID = ID;
 		this.planning = plans;
+		this.computeValue();
+	}
+	
+	/**
+	 * Accessor to the ID of the schedule
+	 * @return the ID of the schedule
+	 */
+	public int getID() {
+		return this.ID;
+	}
+	
+	/**
+	 * Accessor to the value of the schedule
+	 * @return the value of the schedule
+	 */
+	public int getValue() {
+		return this.value;
 	}
 	
 	/**
@@ -24,7 +45,7 @@ public class Schedule {
 	 * -all plan are compatible with each other
 	 * @return true if the schedule is valid
 	 */
-	public boolean isValid() {
+	protected boolean isValid() {
 		boolean valid = true;
 		Iterator<Plan> i = planning.iterator();
 		while(i.hasNext()) {
@@ -44,15 +65,19 @@ public class Schedule {
 	
 	/**
 	 * A method to compute the value of the proposed schedule
-	 * @return
+	 * @return the value of the schedule. If not valid return 0
 	 */
-	public int getValue() {
-		int value = 0;
-		Iterator<Plan> i = planning.iterator();
-		while(i.hasNext()) {
-			Plan p = i.next();
-			value += p.getValue();
+	protected void computeValue() {
+		if(this.isValid()) {
+			int value = 0;
+			Iterator<Plan> i = planning.iterator();
+			while(i.hasNext()) {
+				Plan p = i.next();
+				value += p.getValue();
+			}
+			this.value = value;
+		} else {
+			this.value = 0;
 		}
-		return value;
 	}
 }

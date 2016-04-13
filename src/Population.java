@@ -1,43 +1,49 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
  * @author Sébastien
- *
+ * Population class for genetic algorithm
+ * Schedule represent an individual
+ * Genetic is the main algorithm
  */
-public class Genetic {
+public class Population {
 
-	private LinkedList<Schedule> population;
-	private Observation[] data;
+	private LinkedList<Individu> population;
 	
 	/**
 	 * Constructor for the genetic method
 	 * @param src: name of the file stored in rsc folder
 	 */
-	public Genetic(String src) {
-		this.data = Filehandler.read(src);
-		this.population = new LinkedList<Schedule>();
+	public Population() {
+		this.population = new LinkedList<Individu>();
 	}
 	
 	/**
-	 * Methods for the genetic algorithm
-	 * For each star pick a random night when the observation is feasible
-	 * @param pop: size of the initial population
+	 * Add an individual to the population
+	 * @param s: schedule to add
 	 */
-	public void genetic_initial(int pop) {
-		for(int i = 0; i<pop;i++) {
-			LinkedList<Plan> p = new LinkedList<Plan>();
-			for(int j = 0; j <data.length;j++) {
-				p.add(data[j].randomPlan());
+	public void addIndividual(Individu s) {
+		population.add(s);
+	}
+	
+	/**
+	 * Accessor to the best schedule of the population
+	 * @return the best schedule regarding to the value
+	 */
+	private Individu getAlpha() {
+		Iterator<Individu> i = population.iterator();
+		Individu best = i.next();
+		while(i.hasNext()) {
+			Individu s = i.next();
+			if(s.getValue()> best.getValue()) {
+				best = s;
 			}
-			population.add(new Schedule(p));
 		}
+		return best;
 	}
 	
-	private void emjambement() {
-		
-	}
-	
-	private void mutation() {
+	public void evolve() {
 		
 	}
 }
