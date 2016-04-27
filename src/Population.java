@@ -27,23 +27,35 @@ public class Population {
 		population.add(s);
 	}
 	
+	public int getSize() {
+		return population.size();
+	}
+	
 	/**
 	 * Accessor to the best schedule of the population
 	 * @return the best schedule regarding to the value
 	 */
-	private Individu getAlpha() {
+	public Individu getAlpha() {
 		Iterator<Individu> i = population.iterator();
 		Individu best = i.next();
+		int bestvalue = best.computeValue();
 		while(i.hasNext()) {
 			Individu s = i.next();
-			if(s.getValue()> best.getValue()) {
+			int challenger = s.computeValue();
+			if(challenger> bestvalue) {
 				best = s;
+				bestvalue = challenger;
 			}
 		}
+		System.out.println(best.getSize());
 		return best;
 	}
 	
-	public void evolve() {
-		
+	public Individu tournoi(int size) {
+		Population p = new Population();
+		for(int i = 0; i<size;i++) {
+			p.addIndividual(population.get((int) Math.random()*population.size()));
+		}
+		return p.getAlpha();
 	}
 }

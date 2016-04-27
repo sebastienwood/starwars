@@ -8,7 +8,7 @@
  */
 public abstract class Solver {
 
-	protected Observation[] data;
+	protected Etoile[] data;
 	
 	public Solver(String src) {
 		data = Filehandler.read(src);

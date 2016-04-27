@@ -4,9 +4,9 @@ import java.util.Random;
 
 /**
  * @author Sébastien
- *
+ * Represent a potential observation AKA a star, with a value (priority) and nights when it is feasible
  */
-public class Observation {
+public class Etoile {
 	private int ID;
 	private int priority;
 	private LinkedList<Night> nuits;
@@ -17,7 +17,7 @@ public class Observation {
 	 * @param priority: priority of the observation
 	 * @param nuits: nights when the observation is feasible
 	 */
-	public Observation(int ID, int priority, LinkedList<Night> nuits) {
+	public Etoile(int ID, int priority, LinkedList<Night> nuits) {
 		this.ID = ID;
 		this.priority = priority;
 		this.nuits = nuits;
@@ -72,14 +72,5 @@ public class Observation {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Generate a random plan for this observation
-	 * @return a random plan
-	 */
-	public Plan randomPlan() {
-		Random rand = new Random();
-		return new Plan(this, nuits.get(rand.nextInt(nuits.size())));
 	}
 }

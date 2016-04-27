@@ -8,21 +8,25 @@
  */
 public class Plan {
 
-	private Observation obs;
-	private Night night;
+	private Etoile obs;
+	private int night;
+	private int debutplan;
+	private int finplan;
 	
 	/**
 	 * Constructor of a plan
 	 * @param o: observation done
 	 * @param n: night when the observation is done
 	 */
-	public Plan(Observation o, Night n) {
+	public Plan(Etoile o, int night, int deb, int fin) {
 		this.obs = o;
-		this.night = n;
+		this.night = night;
+		this.debutplan = deb;
+		this.finplan = fin;
 	}
 	
 	public int getNight() {
-		return night.getID();
+		return this.night;
 	}
 	
 	public int getStar() {
@@ -34,26 +38,25 @@ public class Plan {
 	}
 	
 	public int getDeb() {
-		return night.getDebut();
+		return this.debutplan;
 	}
 	
 	public int getFin() {
-		return night.getFin();
+		return this.finplan;
 	}
 	
 	public int getDur() {
-		return night.getDuree();
+		return finplan-debutplan;
 	}
 	
 	/**
 	 * A method to check if 2 plan are compatible
-	 * TODO: include the 1/2 condition
 	 * @param p: the plan to compare to
 	 * @return true if the plans are compatible
 	 */
 	public boolean isCompatible(Plan p) {
 		boolean compatibility = true;
-		if(this.night.getID() == p.getNight() && (this.night.getDebut()>=p.getFin() || this.night.getFin()<=p.getDeb())) {
+		if(this.night == p.getNight() && (this.debutplan>=p.getFin() || this.finplan<=p.getDeb())) {
 			compatibility = false;
 		}
 		return compatibility;
