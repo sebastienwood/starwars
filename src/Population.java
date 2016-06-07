@@ -9,6 +9,7 @@ import java.util.LinkedList;
  */
 public class Population {
 
+	/* Un individu représente un schedule*/
 	private LinkedList<Individu> population;
 	
 	/**
@@ -38,16 +39,15 @@ public class Population {
 	public Individu getAlpha() {
 		Iterator<Individu> i = population.iterator();
 		Individu best = i.next();
-		int bestvalue = best.computeValue();
+		int bestvalue = best.getValue();
 		while(i.hasNext()) {
 			Individu s = i.next();
-			int challenger = s.computeValue();
+			int challenger = s.getValue();
 			if(challenger> bestvalue) {
 				best = s;
 				bestvalue = challenger;
 			}
 		}
-		System.out.println(best.getSize());
 		return best;
 	}
 	
@@ -56,6 +56,7 @@ public class Population {
 		for(int i = 0; i<size;i++) {
 			p.addIndividual(population.get((int) Math.random()*population.size()));
 		}
+		System.out.println(p.getAlpha().toString());
 		return p.getAlpha();
 	}
 }

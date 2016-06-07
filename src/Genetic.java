@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -16,6 +13,7 @@ public class Genetic extends Solver {
 	/*Paramètres de l'algorithme*/
 	private double taux_mutation; 
 	private int taille_tournoi;
+	private double taux_uniforme;
 	
 	private Population pop;
 	
@@ -26,10 +24,11 @@ public class Genetic extends Solver {
 	 * @param taux_mutation: mutation rate wished
 	 * @param taille_tournoi: tournament size wished
 	 */
-	public Genetic(String src, int popsize, double taux_mutation, int taille_tournoi) {
+	public Genetic(String src, int popsize, double taux_mutation, int taille_tournoi, double taux_uniforme) {
 		super(src);
 		this.taille_tournoi = taille_tournoi;
 		this.taux_mutation = taux_mutation;
+		this.taux_uniforme = taux_uniforme;
 		this.pop = new Population();
 		
 		for(int i = 0; i< popsize; i ++) {
@@ -41,6 +40,7 @@ public class Genetic extends Solver {
 		super(src);
 		this.taille_tournoi = 5;
 		this.taux_mutation = 0.015;
+		this.taux_uniforme = 0.5;
 		this.pop = new Population();
 		
 		for(int i = 0; i< popsize; i ++) {
@@ -48,25 +48,21 @@ public class Genetic extends Solver {
 		}
 	}
 	
+	/**
+	 * TODO: rework
+	 * @param ind
+	 * @return
+	 */
 	private Individu breed(int ind) {
-		/*
-		 * Queue all the possible star ID
-		 * Randomize
-		 * Take the first one
-		 * Then for each successive, try to put it in
-		 */
-		Individu i = new Individu(ind);
-		LinkedList<Etoile> o = new LinkedList<Etoile>(Arrays.asList(data));
-		Collections.shuffle(o);
-		Iterator<Etoile> it = o.iterator();
-		while(it.hasNext()) {
-			Etoile ob = it.next();
-			i.tryAdding(ob);
+		int[] nuit_choisie = new int[data.length];
+		for(int i = 0;i<data.length;i++) {
+			nuit_choisie[i] = data[i].randomNight();
 		}
-		return i;
+		
+		return new Individu(ind, nuit_choisie, data);
 	}
 	
-	/*
+	/**
 	 * TODO: fill method
 	 */
 	public void evolve() {
@@ -80,8 +76,13 @@ public class Genetic extends Solver {
 		for(int i=1;i<pop.getSize();i++) {
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
-			i1.crossover(i2);
+			i1.crossover(i2, taux_uniforme);
+			i1.mutate(taux_mutation);
 			newGen.add(i1);
 		}
+	}
+	
+	public int getValue() {
+		return pop.getAlpha().getValue();
 	}
 }

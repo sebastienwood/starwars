@@ -9,7 +9,7 @@ import java.util.Random;
 public class Etoile {
 	private int ID;
 	private int priority;
-	private LinkedList<Night> nuits;
+	private LinkedList<Night> data;
 	
 	/**
 	 * Constructor of an observation (AKA a star to study)
@@ -17,10 +17,10 @@ public class Etoile {
 	 * @param priority: priority of the observation
 	 * @param nuits: nights when the observation is feasible
 	 */
-	public Etoile(int ID, int priority, LinkedList<Night> nuits) {
+	public Etoile(int ID, int priority, LinkedList<Night> data) {
 		this.ID = ID;
 		this.priority = priority;
-		this.nuits = nuits;
+		this.data = data;
 	}
 	
 	/**
@@ -40,37 +40,27 @@ public class Etoile {
 	}
 	
 	/**
-	 * Test if the observation is feasible a specified night
-	 * @param night: the night we want to test
-	 * @return true if feasible
+	 * Return the ID of a night when the star is visible
 	 */
-	public boolean feasibleAt(int night) {
-		Iterator<Night> i = nuits.iterator();
-		while(i.hasNext()) {
-			Night n = i.next();
-			if(n.getID() == night) {
-				return true;
-			}
-		}
-		return false;
+	public int randomNight() {
+		Random rand = new Random();
+		return data.get(rand.nextInt(data.size())).getID();
 	}
 	
 	/**
-	 * Accessor to a night
-	 * @param night: number of the night 
-	 * @return the night specified, null if non feasible
+	 * A method to access a specified ID night
+	 * @param index : the n° of the night we want to access
+	 * @return the night
 	 */
-	public Night getNight(int night) {
-		Iterator<Night> i = nuits.iterator();
+	public Night getNight(int index) {
+		Night n = null;
+		Iterator<Night> i = data.iterator();
 		while(i.hasNext()) {
-			Night n = i.next();
-			if(n.getID() == night) {
-				return n;
-			}
-			if(n.getID() > night) {
-				return null;
+			n = i.next();
+			if(n.getID() == index) {
+				break;
 			}
 		}
-		return null;
+		return n;
 	}
 }
