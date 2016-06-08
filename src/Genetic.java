@@ -44,14 +44,15 @@ public class Genetic extends Solver {
 		this.pop = new Population();
 		
 		for(int i = 0; i< popsize; i ++) {
-			pop.addIndividual(this.breed(i));
+			Individu newOne = this.breed(i);
+			pop.addIndividual(newOne);
 		}
 	}
 	
 	/**
-	 * TODO: rework
-	 * @param ind
-	 * @return
+	 * A method to breed a new individual
+	 * @param ind: the nb associated with the individual
+	 * @return the new individual
 	 */
 	private Individu breed(int ind) {
 		int[] nuit_choisie = new int[data.length];
@@ -63,7 +64,7 @@ public class Genetic extends Solver {
 	}
 	
 	/**
-	 * TODO: fill method
+	 * A method to evolve the whole population 
 	 */
 	public void evolve() {
 		/*
@@ -82,7 +83,26 @@ public class Genetic extends Solver {
 		}
 	}
 	
+	/**
+	 * Return the best value of the population
+	 * @return the best value of the population
+	 */
 	public int getValue() {
 		return pop.getAlpha().getValue();
+	}
+
+	/**
+	 * A methode to give life to the population for a given time in hours
+	 * @param i: a time in hours
+	 */
+	public void live(double i) {
+		double fin = System.currentTimeMillis()+(i*3600*1000);
+		int gen = 0;
+		while(System.currentTimeMillis()<fin) {
+			this.evolve();
+			gen++;
+			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue());
+		}
+		System.out.println(this.getValue());		
 	}
 }
