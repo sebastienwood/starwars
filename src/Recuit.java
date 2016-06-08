@@ -33,6 +33,8 @@ public class Recuit {
 			int best = solution.getValue();
 			Schedule newOne = new Schedule(solution);
 			newOne.randomChange();
+			System.out.println(solution.toString());
+			System.out.println(newOne.toString());
 			if(this.critMetropolis(newOne.getValue()-best, temp)) {
 				solution = newOne;
 			}
