@@ -36,6 +36,11 @@ public class Genetic extends Solver {
 		}
 	}
 	
+	/**
+	 * Generic constructor
+	 * @param src: the source file
+	 * @param popsize: initial pop size wished
+	 */
 	public Genetic(String src, int popsize) {
 		super(src);
 		this.taille_tournoi = 5;
@@ -104,5 +109,9 @@ public class Genetic extends Solver {
 			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue());
 		}
 		System.out.println(this.getValue());		
+	}
+
+	public Schedule getAlpha() {
+		return pop.getAlpha();
 	}
 }

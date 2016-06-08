@@ -51,12 +51,17 @@ public class Population {
 		return best;
 	}
 	
+	/**
+	 * A method to confront Individual that keeps the best
+	 * @param size: the number of individual confronting
+	 * @return the one with the best value
+	 */
 	public Individu tournoi(int size) {
 		Population p = new Population();
 		for(int i = 0; i<size;i++) {
 			p.addIndividual(population.get((int) Math.random()*population.size()));
 		}
-		System.out.println(p.getAlpha().toString());
+		//System.out.println(p.getAlpha().toString());
 		return p.getAlpha();
 	}
 }

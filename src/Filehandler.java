@@ -51,6 +51,11 @@ public class Filehandler {
 		return new Night(id, deb, fin, duree);
 	}
 	
+	/**
+	 * A static method to read a complete file
+	 * @param src: name of the file
+	 * @return all the Etoile in an array
+	 */
 	public static Etoile[] read(String src) {
 		Scanner in;
 		try {
