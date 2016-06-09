@@ -17,12 +17,14 @@ public class Individu extends Schedule {
 	 * A method to evolve an individual given a probability that a gene will change (for each gene)
 	 * @param taux_mutation: a chance that a gene will change
 	 */
-	public void mutate(double taux_mutation) {
+	public Individu mutate(double taux_mutation) {
+		int[] nuits = this.getStarsNights();
 		for(int i = 0; i<etoiles.length;i++) {
 			if(Math.random()<= taux_mutation) {
-				nuits_choisies[i] = etoiles[i].randomNight();
+				nuits[i] = etoiles[i].randomNight();
 			}
 		}
+		return new Individu(this.ID,nuits,this.etoiles);
 	}
 
 	/**
@@ -30,11 +32,13 @@ public class Individu extends Schedule {
 	 * @param i2: the other individual
 	 * @return a new generation of individual
 	 */
-	public void crossover(Individu i2, double taux_uniforme) {
+	public Individu crossover(Individu i2, double taux_uniforme) {
+		int[] nuits = this.getStarsNights();
 		for(int i = 0; i<nuits_choisies.length;i++){
 			if(Math.random()<=taux_uniforme) {
-				this.nuits_choisies[i] = i2.getStarNight(i);
+				nuits[i] = i2.getStarNight(i);
 			}
 		}
+		return new Individu(this.ID,nuits,this.etoiles);
 	}
 }

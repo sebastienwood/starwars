@@ -59,7 +59,7 @@ public class Schedule {
 	}
 	
 	public int[] getStarsNights() {
-		return nuits_choisies;
+		return nuits_choisies.clone();
 	}
 	
 	public Etoile[] getStars() {

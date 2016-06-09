@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 
 /**
  * 
@@ -84,9 +83,9 @@ public class Genetic extends Solver {
 		for(int i=2;i<pop.getSize();i++) {
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
-			i1.crossover(i2, taux_uniforme);
-			i1.mutate(taux_mutation);
-			newGen.addIndividual(i1);
+			Individu newOne = i1.crossover(i2, taux_uniforme);
+			Individu mutated = newOne.mutate(taux_mutation);
+			newGen.addIndividual(mutated);
 		}
 		pop = newGen;
 	}

@@ -2,10 +2,10 @@ public class Executable {
 
 	public static void main(String[] args) {
 
-		Genetic sol = new Genetic("ins_400_71_1", 1000);
+		Genetic sol = new Genetic("ins_400_71_1", 3000);
 		
 		/*Pilot the treads*/
-		sol.live(0.5);
+		sol.live(2);
 		
 		/*
 		Schedule alpha = sol.getAlpha();
