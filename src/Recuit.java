@@ -22,7 +22,6 @@ public class Recuit {
 		{
 			if(Math.random()<=Math.exp(-delta/temp)) {
 				crit = true;
-				System.out.println("metropolis de merde");
 			}
 		}
 		return crit;

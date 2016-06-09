@@ -77,15 +77,18 @@ public class Genetic extends Solver {
 		 * Pour toute la population, faire des croisements
 		 * Faire des mutations sur la nouvelle population
 		 */
-		LinkedList<Individu> newGen = new LinkedList<Individu>();
-		newGen.add(pop.getAlpha());
-		for(int i=1;i<pop.getSize();i++) {
+		Population newGen = new Population();
+		
+		newGen.addIndividual(pop.getAlpha());
+		newGen.addIndividual(this.breed(0));
+		for(int i=2;i<pop.getSize();i++) {
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
 			i1.crossover(i2, taux_uniforme);
 			i1.mutate(taux_mutation);
-			newGen.add(i1);
+			newGen.addIndividual(i1);
 		}
+		pop = newGen;
 	}
 	
 	/**

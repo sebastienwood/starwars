@@ -71,7 +71,6 @@ public class Schedule {
 	 */
 	public void randomChange() {
 		int change = (int)(Math.random()*nuits_choisies.length);
-		System.out.println(change);
 		nuits_choisies[change] = etoiles[change].randomNight();
 	}
 	
