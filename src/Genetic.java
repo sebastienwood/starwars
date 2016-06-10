@@ -95,7 +95,7 @@ public class Genetic extends Solver {
 	 * @return the best value of the population
 	 */
 	public int getValue() {
-		return pop.getAlpha().getValue();
+		return pop.getAlpha().getValue(true);
 	}
 
 	/**

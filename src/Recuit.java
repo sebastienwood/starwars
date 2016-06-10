@@ -28,17 +28,29 @@ public class Recuit {
 	}
 	
 	public int activate() {
-		while(temp>conditionarret_temp) {
-			int best = solution.getValue();
+		Schedule bestSchedule = solution;
+		double temptemp = this.temp;
+		while(temptemp>conditionarret_temp) {
+			int best = solution.getValue(true);
 			Schedule newOne = new Schedule(solution);
 			newOne.randomChange();
-			System.out.println(solution.toString());
-			System.out.println(newOne.toString());
-			if(this.critMetropolis(newOne.getValue()-best, temp)) {
+			if(newOne.getValue(true) > bestSchedule.getValue(true)){
+				bestSchedule = newOne;
+			}
+			if(this.critMetropolis(newOne.getValue(true)-best, temptemp)) {
 				solution = newOne;
 			}
-			temp *= (1-taux_ref);
+			temptemp *= (1-taux_ref);
 		}
-		return solution.getValue();
+		this.solution = bestSchedule;
+		return bestSchedule.getValue(true);
+	}
+
+	public int getValue(boolean FF) {
+		if(FF) {
+			return solution.getValue(true);
+		} else {
+			return solution.getValue(false);
+		}
 	}
 }

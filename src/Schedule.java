@@ -78,30 +78,35 @@ public class Schedule {
 	 * Return the value of the schedule
 	 * @return the value of the schedule
 	 */
-	public int getValue() {
-		LinkedList<Night> nuits = new LinkedList<Night>();
-		LinkedList<Integer> importance = new LinkedList<Integer>();
-		int prises = 0;
-		int nuit = 0;
+	public int getValue(boolean FF) {
 		int valeur = 0;
+		int valeurmax = 0;
+		int valeurPlanifiee = 0;
+		for(int i = 0; i<etoiles.length;i++) {
+			valeurmax+=etoiles[i].getPriority();
+		}
 		
-		while(prises<etoiles.length) {
-			/*Pour chaque etoile, parcourir les nuits*/
-			for(int i = 0;i<etoiles.length;i++) {
-				if(nuits_choisies[i] == nuit) {
-					prises++;
-					nuits.add(etoiles[i].getNight(nuit));
-					importance.add(etoiles[i].getPriority());
+		int nuit_actuelle = 0;
+		while(valeur<valeurmax) {
+			/*Constituer les linked list utiles: night importance starID*/
+			LinkedList<Night> nights = new LinkedList<Night>();
+			LinkedList<Integer> imp = new LinkedList<Integer>();
+			LinkedList<Integer> starID = new LinkedList<Integer>();
+			/*Chercher les etoiles de la nuit*/
+			for(int i = 0; i <nuits_choisies.length;i++) {
+				if(nuits_choisies[i] == nuit_actuelle) {
+					nights.add(etoiles[i].getNight(nuit_actuelle));
+					imp.add(etoiles[i].getPriority());
+					valeur += etoiles[i].getPriority();
+					starID.add(etoiles[i].getID());
 				}
 			}
-			/*Ajouter la valeur max de cette nuit*/
-			if(!nuits.isEmpty()) {
-				valeur += OptimizedNightPlanner.value_FF(nuits, importance);
+			if(!nights.isEmpty()) {
+				valeurPlanifiee += OptimizedNightPlanner.value_FF(nights, imp, starID);
 			}
-			/*Nettoyer la linkedlist et itérer*/
-			nuits.clear();
-			nuit++;
+			nuit_actuelle++;
 		}
-		return valeur;
+		
+		return valeurPlanifiee;
 	}
 }

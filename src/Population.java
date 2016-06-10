@@ -39,10 +39,10 @@ public class Population {
 	public Individu getAlpha() {
 		Iterator<Individu> i = population.iterator();
 		Individu best = i.next();
-		int bestvalue = best.getValue();
+		int bestvalue = best.getValue(true);
 		while(i.hasNext()) {
 			Individu s = i.next();
-			int challenger = s.getValue();
+			int challenger = s.getValue(true);
 			if(challenger> bestvalue) {
 				best = s;
 				bestvalue = challenger;
