@@ -63,7 +63,6 @@ public class Genetic extends Solver {
 		for(int i = 0;i<data.length;i++) {
 			nuit_choisie[i] = data[i].randomNight();
 		}
-		
 		return new Individu(ind, nuit_choisie, data);
 	}
 	
@@ -78,8 +77,6 @@ public class Genetic extends Solver {
 		 */
 		Population newGen = new Population();
 		
-		newGen.addIndividual(pop.getAlpha());
-		newGen.addIndividual(this.breed(0));
 		for(int i=2;i<pop.getSize();i++) {
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
@@ -87,6 +84,12 @@ public class Genetic extends Solver {
 			Individu mutated = newOne.mutate(taux_mutation);
 			newGen.addIndividual(mutated);
 		}
+		newGen.addIndividual(pop.getAlpha());
+		newGen.addIndividual(this.breed(0));
+		newGen.print();
+		System.out.println(" ");
+		pop.print();
+		System.out.println(" ");
 		pop = newGen;
 	}
 	
@@ -108,6 +111,7 @@ public class Genetic extends Solver {
 		while(System.currentTimeMillis()<fin) {
 			this.evolve();
 			gen++;
+			System.out.println(pop.getAlpha().toString());
 			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue());
 		}
 		System.out.println(this.getValue());		

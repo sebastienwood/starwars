@@ -61,7 +61,44 @@ public class Population {
 		for(int i = 0; i<size;i++) {
 			p.addIndividual(population.get((int) Math.random()*population.size()));
 		}
-		//System.out.println(p.getAlpha().toString());
 		return p.getAlpha();
+	}
+
+	public boolean sameAlpha(Population newGen) {
+		if(this.getAlpha() == newGen.getAlpha()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean samePop(Population newGen) {
+		Iterator<Individu> i = population.iterator();
+		while(i.hasNext()) {
+			Individu ind = i.next();
+			if(!newGen.has(ind)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean has(Individu in) {
+		Iterator<Individu> i = population.iterator();
+		while(i.hasNext()) {
+			Individu ind = i.next();
+			if(ind.equals(in)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void print() {
+		Iterator<Individu> i = population.iterator();
+		while(i.hasNext()) {
+			Individu ind = i.next();
+			System.out.println(ind.toString());
+		}
 	}
 }

@@ -74,6 +74,26 @@ public class Schedule {
 		nuits_choisies[change] = etoiles[change].randomNight();
 	}
 	
+	public void print() {
+		int valeur = 0;
+		int valeurmax = 0;
+		for(int i = 0; i<etoiles.length;i++) {
+			valeurmax+=etoiles[i].getPriority();
+		}
+		
+		int nuitact = 0;
+		while(valeur<valeurmax) {
+			System.out.println("Nuit "+nuitact);
+			for(int i = 0; i <nuits_choisies.length;i++) {
+				if(nuits_choisies[i] == nuitact) {
+					System.out.println("Etoile "+i);
+					valeur+=etoiles[i].getPriority();
+				}
+			}
+			nuitact++;
+		}
+	}
+	
 	/**
 	 * Return the value of the schedule
 	 * @return the value of the schedule
