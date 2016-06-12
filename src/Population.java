@@ -43,6 +43,7 @@ public class Population {
 		while(i.hasNext()) {
 			Individu s = i.next();
 			int challenger = s.getValue(true);
+			//System.out.print(challenger+" ");
 			if(challenger> bestvalue) {
 				best = s;
 				bestvalue = challenger;
@@ -59,7 +60,7 @@ public class Population {
 	public Individu tournoi(int size) {
 		Population p = new Population();
 		for(int i = 0; i<size;i++) {
-			p.addIndividual(population.get((int) Math.random()*population.size()));
+			p.addIndividual(population.get((int)(Math.random()*population.size())));
 		}
 		return p.getAlpha();
 	}

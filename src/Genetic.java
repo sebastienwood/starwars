@@ -7,7 +7,7 @@
  * @author Sébastien
  *
  */
-public class Genetic extends Solver {
+public class Genetic {
 	
 	/*Paramètres de l'algorithme*/
 	private double taux_mutation; 
@@ -15,6 +15,7 @@ public class Genetic extends Solver {
 	private double taux_uniforme;
 	
 	private Population pop;
+	private Etoile[] data;
 	
 	/**
 	 * Constructor for the Genetic algorithm with customized parameters
@@ -24,7 +25,7 @@ public class Genetic extends Solver {
 	 * @param taille_tournoi: tournament size wished
 	 */
 	public Genetic(String src, int popsize, double taux_mutation, int taille_tournoi, double taux_uniforme) {
-		super(src);
+		this.data = Filehandler.read(src);
 		this.taille_tournoi = taille_tournoi;
 		this.taux_mutation = taux_mutation;
 		this.taux_uniforme = taux_uniforme;
@@ -41,7 +42,7 @@ public class Genetic extends Solver {
 	 * @param popsize: initial pop size wished
 	 */
 	public Genetic(String src, int popsize) {
-		super(src);
+		this.data = Filehandler.read(src);
 		this.taille_tournoi = 5;
 		this.taux_mutation = 0.015;
 		this.taux_uniforme = 0.5;
@@ -49,6 +50,7 @@ public class Genetic extends Solver {
 		
 		for(int i = 0; i< popsize; i ++) {
 			Individu newOne = this.breed(i);
+			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
 	}
@@ -78,6 +80,7 @@ public class Genetic extends Solver {
 		Population newGen = new Population();
 		
 		for(int i=2;i<pop.getSize();i++) {
+			//TODO: tournoi renvoie les mêmes indiv
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
 			Individu newOne = i1.crossover(i2, taux_uniforme);
@@ -86,10 +89,10 @@ public class Genetic extends Solver {
 		}
 		newGen.addIndividual(pop.getAlpha());
 		newGen.addIndividual(this.breed(0));
-		newGen.print();
-		System.out.println(" ");
-		pop.print();
-		System.out.println(" ");
+//		newGen.print();
+//		System.out.println(" ");
+//		pop.print();
+//		System.out.println(" ");
 		pop = newGen;
 	}
 	
@@ -111,7 +114,7 @@ public class Genetic extends Solver {
 		while(System.currentTimeMillis()<fin) {
 			this.evolve();
 			gen++;
-			System.out.println(pop.getAlpha().toString());
+			//System.out.println(pop.getAlpha().toString());
 			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue());
 		}
 		System.out.println(this.getValue());		

@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * @author Sébastien
@@ -70,7 +71,8 @@ public class Schedule {
 	 * Change a night chosen for a star
 	 */
 	public void randomChange() {
-		int change = (int)(Math.random()*nuits_choisies.length);
+		Random rand = new Random();
+		int change = rand.nextInt(nuits_choisies.length);
 		nuits_choisies[change] = etoiles[change].randomNight();
 	}
 	

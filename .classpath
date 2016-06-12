@@ -3,5 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Sébastien/Documents/Eclipse Workspace/lib"/>
+	<classpathentry kind="lib" path="C:/Program Files/IBM/ILOG/CPLEX_Studio_Community1263/opl/lib/oplall.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sébastien/Documents/Eclipse Workspace/lib/iofiles.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sébastien/Documents/Eclipse Workspace/lib/oplInterface.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
