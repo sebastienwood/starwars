@@ -13,6 +13,13 @@ public class Recuit {
 		this.conditionarret_temp = arrettemp;
 	}
 	
+	public Recuit(Schedule sol) {
+		this.solution = sol;
+		this.temp = 80;
+		this.taux_ref = 0.1;
+		this.conditionarret_temp = 5;
+	}
+	
 	private boolean critMetropolis(double delta, double temp) {
 		boolean crit = false;
 		if(delta>=0) {

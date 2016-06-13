@@ -49,7 +49,7 @@ public class Genetic {
 		this.pop = new Population();
 		
 		for(int i = 0; i< popsize; i ++) {
-			Individu newOne = this.breed(i);
+			Schedule newOne = this.breed(i);
 			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
@@ -63,7 +63,7 @@ public class Genetic {
 		this.pop = new Population();
 		
 		for(int i = 0; i< popsize; i ++) {
-			Individu newOne = this.breed(i);
+			Schedule newOne = this.breed(i);
 			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
@@ -76,10 +76,10 @@ public class Genetic {
 		this.taux_uniforme = 0.5;
 		this.pop = new Population();
 		
-		pop.addIndividual((Individu)alpha);
+		pop.addIndividual(alpha);
 		
 		for(int i = 1; i< popsize; i ++) {
-			Individu newOne = this.breed(i);
+			Schedule newOne = this.breed(i);
 			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
@@ -90,12 +90,12 @@ public class Genetic {
 	 * @param ind: the nb associated with the individual
 	 * @return the new individual
 	 */
-	private Individu breed(int ind) {
+	private Schedule breed(int ind) {
 		int[] nuit_choisie = new int[data.length];
 		for(int i = 0;i<data.length;i++) {
 			nuit_choisie[i] = data[i].randomNight();
 		}
-		return new Individu(ind, nuit_choisie, data);
+		return new Schedule(ind, nuit_choisie, data);
 	}
 	
 	/**
@@ -112,10 +112,10 @@ public class Genetic {
 		newGen.addIndividual(this.breed(0));
 		
 		for(int i=2;i<pop.getSize();i++) {
-			Individu i1 = pop.tournoi(taille_tournoi);
-			Individu i2 = pop.tournoi(taille_tournoi);
-			Individu newOne = i1.crossover(i2, taux_uniforme);
-			Individu mutated = newOne.mutate(taux_mutation);
+			Schedule i1 = pop.tournoi(taille_tournoi);
+			Schedule i2 = pop.tournoi(taille_tournoi);
+			Schedule newOne = i1.crossover(i2, taux_uniforme);
+			Schedule mutated = newOne.mutate(taux_mutation);
 			newGen.addIndividual(mutated);
 		}
 		pop = newGen;
@@ -147,5 +147,9 @@ public class Genetic {
 
 	public Schedule getAlpha() {
 		return pop.getAlpha();
+	}
+	
+	public void updateAlpha(Schedule newAlpha) {
+		pop.switchRandom(newAlpha);
 	}
 }

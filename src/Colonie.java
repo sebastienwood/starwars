@@ -6,14 +6,14 @@ import java.util.*;
  * @author Sébastien
  * A class to represent a telescope schedule
  */
-public class ScheduleQ {
+public class Colonie {
 
 	protected int ID;
 	protected LinkedList<ObservationQ> planning;
 	private int NbEtoiles;
 	
 	
-	public ScheduleQ(int n) {
+	public Colonie(int n) {
 		this.NbEtoiles=n;
 	}
 	

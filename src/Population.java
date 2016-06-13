@@ -10,21 +10,21 @@ import java.util.LinkedList;
 public class Population {
 
 	/* Un individu représente un schedule*/
-	private LinkedList<Individu> population;
+	private LinkedList<Schedule> population;
 	
 	/**
 	 * Constructor for the genetic method
 	 * @param src: name of the file stored in rsc folder
 	 */
 	public Population() {
-		this.population = new LinkedList<Individu>();
+		this.population = new LinkedList<Schedule>();
 	}
 	
 	/**
 	 * Add an individual to the population
 	 * @param s: schedule to add
 	 */
-	public void addIndividual(Individu s) {
+	public void addIndividual(Schedule s) {
 		population.add(s);
 	}
 	
@@ -36,12 +36,12 @@ public class Population {
 	 * Accessor to the best schedule of the population
 	 * @return the best schedule regarding to the value
 	 */
-	public Individu getAlpha() {
-		Iterator<Individu> i = population.iterator();
-		Individu best = i.next();
+	public Schedule getAlpha() {
+		Iterator<Schedule> i = population.iterator();
+		Schedule best = i.next();
 		int bestvalue = best.getValue(true);
 		while(i.hasNext()) {
-			Individu s = i.next();
+			Schedule s = i.next();
 			int challenger = s.getValue(true);
 			//System.out.print(challenger+" ");
 			if(challenger> bestvalue) {
@@ -57,7 +57,7 @@ public class Population {
 	 * @param size: the number of individual confronting
 	 * @return the one with the best value
 	 */
-	public Individu tournoi(int size) {
+	public Schedule tournoi(int size) {
 		Population p = new Population();
 		for(int i = 0; i<size;i++) {
 			p.addIndividual(population.get((int)(Math.random()*population.size())));
@@ -74,9 +74,9 @@ public class Population {
 	}
 
 	public boolean samePop(Population newGen) {
-		Iterator<Individu> i = population.iterator();
+		Iterator<Schedule> i = population.iterator();
 		while(i.hasNext()) {
-			Individu ind = i.next();
+			Schedule ind = i.next();
 			if(!newGen.has(ind)) {
 				return false;
 			}
@@ -84,10 +84,10 @@ public class Population {
 		return true;
 	}
 
-	private boolean has(Individu in) {
-		Iterator<Individu> i = population.iterator();
+	private boolean has(Schedule in) {
+		Iterator<Schedule> i = population.iterator();
 		while(i.hasNext()) {
-			Individu ind = i.next();
+			Schedule ind = i.next();
 			if(ind.equals(in)) {
 				return true;
 			}
@@ -96,10 +96,15 @@ public class Population {
 	}
 
 	public void print() {
-		Iterator<Individu> i = population.iterator();
+		Iterator<Schedule> i = population.iterator();
 		while(i.hasNext()) {
-			Individu ind = i.next();
+			Schedule ind = i.next();
 			System.out.println(ind.toString());
 		}
+	}
+
+	public void switchRandom(Schedule newAlpha) {
+		population.remove((int)(Math.random()*population.size()));
+		population.add(newAlpha);
 	}
 }
