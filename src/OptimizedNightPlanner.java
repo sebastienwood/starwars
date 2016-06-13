@@ -50,35 +50,49 @@ public class OptimizedNightPlanner {
 		/*Prendre ceux qui sont compatibles*/
 		LinkedList<Integer> bons = new LinkedList<Integer>();
 		bons.add(0);
-		int last = 0;
-		for(int i = 1;i<donnees.length;i++) {
-			if(donnees[last].getFin()<donnees[i].getDebut()) {
+		int currenttime = donnees[0].getDebut()+donnees[0].getDuree();
+		for(int i = 1; i<donnees.length;i++) {
+			int duration = donnees[i].getDuree();
+			int begin = donnees[i].getDebut();
+			int finish = donnees[i].getFin();
+			
+			if(currenttime <= begin) {
 				bons.add(i);
-				last= i;
+				currenttime = begin+duration;
+			} else if(currenttime+duration<=finish) {
+				bons.add(i);
+				currenttime += duration;
 			}
 		}
-		/*Calcul de la duree totale de la nuit 'bons' */
-		/* + Calcul du debut au plus tot du planning*/
-		int dureeTotaleBons = 0;
-		int debutAuPlusTotPlanning = 10^10;
-		int finAuPlusTardPlanning = 0;
-		Iterator<Integer> iter = bons.iterator();
-		while(iter.hasNext()){
-			int myInt = iter.next();
-			dureeTotaleBons += donnees[myInt].getDuree();
-			if (debutAuPlusTotPlanning > donnees[myInt].getDebut()){
-				debutAuPlusTotPlanning = donnees[myInt].getDebut();
-			}
-			if (finAuPlusTardPlanning < donnees[myInt].getFin()){
-				finAuPlusTardPlanning = donnees[myInt].getFin();
-			}
-		}
-		
-		
-		/*Verifie si la duree totale de la nuit ne depasse pas la plage maximale d observation */
-		if (dureeTotaleBons > finAuPlusTardPlanning - debutAuPlusTotPlanning){
-			bons.remove(0);
-		}
+//		int last = 0;
+//		for(int i = 1;i<donnees.length;i++) {
+//			if(donnees[last].getFin()<donnees[i].getDebut()) {
+//				bons.add(i);
+//				last= i;
+//			}
+//		}
+//		/*Calcul de la duree totale de la nuit 'bons' */
+//		/* + Calcul du debut au plus tot du planning*/
+//		int dureeTotaleBons = 0;
+//		int debutAuPlusTotPlanning = 10^10;
+//		int finAuPlusTardPlanning = 0;
+//		Iterator<Integer> iter = bons.iterator();
+//		while(iter.hasNext()){
+//			int myInt = iter.next();
+//			dureeTotaleBons += donnees[myInt].getDuree();
+//			if (debutAuPlusTotPlanning > donnees[myInt].getDebut()){
+//				debutAuPlusTotPlanning = donnees[myInt].getDebut();
+//			}
+//			if (finAuPlusTardPlanning < donnees[myInt].getFin()){
+//				finAuPlusTardPlanning = donnees[myInt].getFin();
+//			}
+//		}
+//		
+//		
+//		/*Verifie si la duree totale de la nuit ne depasse pas la plage maximale d observation */
+//		if (dureeTotaleBons > finAuPlusTardPlanning - debutAuPlusTotPlanning){
+//			bons.remove(0);
+//		}
 		
 		/*Compter leur valeur*/
 		int valeur = 0;
