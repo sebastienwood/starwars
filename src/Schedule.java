@@ -124,7 +124,11 @@ public class Schedule {
 				}
 			}
 			if(!nights.isEmpty()) {
-				valeurPlanifiee += OptimizedNightPlanner.value_FF(nights, imp, starID);
+				if(FF) {
+					valeurPlanifiee += OptimizedNightPlanner.value_FF(nights, imp, starID);
+				} else {
+					valeurPlanifiee += OptimizedNightPlanner.value_mv(nights, imp);
+				}
 			}
 			nuit_actuelle++;
 		}
