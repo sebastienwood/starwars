@@ -78,21 +78,16 @@ public class Genetic {
 		 * Faire des mutations sur la nouvelle population
 		 */
 		Population newGen = new Population();
+		newGen.addIndividual(pop.getAlpha());
+		newGen.addIndividual(this.breed(0));
 		
 		for(int i=2;i<pop.getSize();i++) {
-			//TODO: tournoi renvoie les mêmes indiv
 			Individu i1 = pop.tournoi(taille_tournoi);
 			Individu i2 = pop.tournoi(taille_tournoi);
 			Individu newOne = i1.crossover(i2, taux_uniforme);
 			Individu mutated = newOne.mutate(taux_mutation);
 			newGen.addIndividual(mutated);
 		}
-		newGen.addIndividual(pop.getAlpha());
-		newGen.addIndividual(this.breed(0));
-//		newGen.print();
-//		System.out.println(" ");
-//		pop.print();
-//		System.out.println(" ");
 		pop = newGen;
 	}
 	
