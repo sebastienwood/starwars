@@ -1,6 +1,6 @@
 
 public class ObservationQ {
-	private EtoileQ e;
+	private Etoile e;
 	private double debut;
 	private double fin ;
 	private double duree;
@@ -12,7 +12,7 @@ public class ObservationQ {
 	 * @param e the star we want to observe
 	 * @param i the id of the night we want to watch the star
 	 */
-	public ObservationQ( EtoileQ e, int i) {
+	public ObservationQ(Etoile e, int i) {
 		this.e=e;
 		for(int k =0;k<e.getNbNight();k++) {
 			if(e.getNight(k).getID()==i) {

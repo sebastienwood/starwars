@@ -63,4 +63,8 @@ public class Etoile {
 		}
 		return n;
 	}
+	
+	public int getNbNight() {
+		return this.data.size();
+	}
 }

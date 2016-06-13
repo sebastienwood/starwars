@@ -55,6 +55,36 @@ public class Genetic {
 		}
 	}
 	
+	public Genetic(Etoile[] data, int popsize) {
+		this.data = data;
+		this.taille_tournoi = 5;
+		this.taux_mutation = 0.015;
+		this.taux_uniforme = 0.5;
+		this.pop = new Population();
+		
+		for(int i = 0; i< popsize; i ++) {
+			Individu newOne = this.breed(i);
+			//System.out.println(newOne.toString());
+			pop.addIndividual(newOne);
+		}
+	}
+	
+	public Genetic(Etoile[] data, int popsize, Schedule alpha) {
+		this.data = data;
+		this.taille_tournoi = 5;
+		this.taux_mutation = 0.015;
+		this.taux_uniforme = 0.5;
+		this.pop = new Population();
+		
+		pop.addIndividual((Individu)alpha);
+		
+		for(int i = 1; i< popsize; i ++) {
+			Individu newOne = this.breed(i);
+			//System.out.println(newOne.toString());
+			pop.addIndividual(newOne);
+		}
+	}
+	
 	/**
 	 * A method to breed a new individual
 	 * @param ind: the nb associated with the individual

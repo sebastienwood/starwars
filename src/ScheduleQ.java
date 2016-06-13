@@ -39,7 +39,7 @@ public class ScheduleQ {
 	 * @param stars les données fournies par Filehandler
 	 * @return la liste de toutes les observations possibles et faisables pour notre problème
 	 */
-	public LinkedList<ObservationQ> Organize(EtoileQ[] stars) {
+	public LinkedList<ObservationQ> Organize(Etoile[] stars) {
 		LinkedList<ObservationQ> observations = new LinkedList<>();
 		for (int i=0;i<stars.length;i++) {          //pour chaque étoile
 			for (int j=0;j<stars[i].getNbNight();j++) {            //pour chaque nuit où l'étoile apparait
@@ -73,13 +73,8 @@ public class ScheduleQ {
 //			System.out.println(observations.get(i).getProba());
 //			tableau[observations.get(i).getIDnuit()]+=observations.get(i).getProba();
 		}
-//		for(int i=0;i<tableau.length;i++) {
-//		System.out.println(tableau[i]);
-//		}
-		
-		
-	}
 	
+	}
 	
 	public void setProbasAccordingToInterest (LinkedList<ObservationQ> observations ) {
 		Iterator<ObservationQ> iter = observations.iterator();
@@ -97,18 +92,6 @@ public class ScheduleQ {
 		for(int j=0;j<observations.size();j++) {
 			observations.get(j).setProba(observations.get(j).getProba()/tab[observations.get(j).getIDnuit()]);
 		}
-		
-//		for(int i=0;i<=NbNuits;i++) {
-//		iter = observations.iterator();
-//		int totalInterest =0;
-//		while(iter.hasNext()) {
-//			ObservationQ o = iter.next();
-//			if(o.getIDnuit()==i) totalInterest+= o.getInterest();
-//		}
-//		for(int j=0;j<observations.size();j++) {
-//			if(observations.get(j).getIDnuit()==i) observations.get(j).setProba(observations.get(j).getInterest()/totalInterest);
-//			}
-//		}
 	}
 	
 	/**
@@ -136,9 +119,6 @@ public class ScheduleQ {
 			observations.get(i).setProba(observations.get(i).getProba()-y);
 		}
 	}
-	
-	
-	
 	
 	public LinkedList<ObservationQ> fourmi(LinkedList<ObservationQ> observations) {
 		
@@ -260,7 +240,7 @@ public class ScheduleQ {
 	 * @param y
 	 * @return
 	 */
-	public LinkedList<ObservationQ> AntAlgorithm(EtoileQ[] stars, int n, int k, double x, double y) {
+	public LinkedList<ObservationQ> AntAlgorithm(Etoile[] stars, int n, int k, double x, double y) {
 		LinkedList<ObservationQ> observations= this.Organize(stars);
 		this.setProbas(observations);
 		LinkedList<ObservationQ> bestway = new LinkedList<>();
@@ -320,9 +300,5 @@ public class ScheduleQ {
 		}
 		return tab;
 	}
-	
-	
-	
-	
 	
 }
