@@ -111,4 +111,8 @@ public class Population {
 		population.remove((int)(Math.random()*population.size()));
 		population.add(newAlpha);
 	}
+
+	public void clear() {
+		population.clear();		
+	}
 }

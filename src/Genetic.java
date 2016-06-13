@@ -1,3 +1,5 @@
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * 
@@ -82,6 +84,15 @@ public class Genetic {
 			Schedule newOne = this.breed(i);
 			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
+		}
+	}
+	
+	public void changePop(LinkedList<Schedule> list) {
+		pop.clear();
+		Iterator<Schedule> i = list.iterator();
+		while(i.hasNext()) {
+			Schedule n = i.next();
+			pop.addIndividual(n);
 		}
 	}
 	
