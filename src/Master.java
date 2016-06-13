@@ -8,7 +8,7 @@
  */
 public class Master {
 
-	private final Etoile[] data;
+	private Etoile[] data;
 	private Schedule alpha;
 	
 	private Genetic GA;
