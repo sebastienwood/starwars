@@ -15,6 +15,10 @@ public class Master {
 	private Recuit SA;
 	private Colonie ACO;
 	
+	/**
+	 * Constructor of the Master class, initialize each representation
+	 * @param src: the instance we work on
+	 */
 	public Master(String src) {
 		this.data = Filehandler.read(src);
 	}

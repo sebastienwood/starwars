@@ -60,4 +60,8 @@ public class Recuit {
 			return solution.getValue(false);
 		}
 	}
+	
+	public Schedule getSchedule() {
+		return this.solution;
+	}
 }
