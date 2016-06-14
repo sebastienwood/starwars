@@ -64,6 +64,13 @@ public class OptimizedNightPlanner {
 				currenttime += duration;
 			}
 		}
+//		int last = 0;
+//		for(int i = 1;i<donnees.length;i++) {
+//			if(donnees[last].getFin()<donnees[i].getDebut()) {
+//				bons.add(i);
+//				last= i;
+//			}
+//		}
 //		/*Calcul de la duree totale de la nuit 'bons' */
 //		/* + Calcul du debut au plus tot du planning*/
 //		int dureeTotaleBons = 0;

@@ -52,7 +52,7 @@ public class Etoile {
 	 * @param index : the n° of the night we want to access
 	 * @return the night
 	 */
-	public Night getNight(int index) {
+	public Night getNightID(int index) {
 		Night n = null;
 		Iterator<Night> i = data.iterator();
 		while(i.hasNext()) {
@@ -66,5 +66,9 @@ public class Etoile {
 	
 	public int getNbNight() {
 		return this.data.size();
+	}
+	
+	public Night getNight(int night) {
+		return this.data.get(night);
 	}
 }

@@ -32,6 +32,8 @@ public class Filehandler {
 		return new Etoile(id, priority, data);
 	}
 	
+
+	
 	/**
 	 * A static method to return a night given a string at the specified format
 	 * @param line: a line at the format "Night 57: p 78 r 417 m 475 d 525" OR "Night 58: "
@@ -50,6 +52,8 @@ public class Filehandler {
 		}
 		return new Night(id, deb, fin, duree);
 	}
+	
+
 	
 	/**
 	 * A static method to read a complete file
@@ -91,4 +95,6 @@ public class Filehandler {
 			return null;
 		}
 	}
+	
+	
 }

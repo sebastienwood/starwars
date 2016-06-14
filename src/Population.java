@@ -103,16 +103,13 @@ public class Population {
 		}
 	}
 
-	/**
-	 * Kill an individual and replace it with a new Alpha
-	 * @param newAlpha: the new leader of the pack
-	 */
 	public void switchRandom(Schedule newAlpha) {
 		population.remove((int)(Math.random()*population.size()));
 		population.add(newAlpha);
 	}
 
 	public void clear() {
-		population.clear();		
+		population.clear();
+		
 	}
 }
