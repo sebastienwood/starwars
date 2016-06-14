@@ -3,7 +3,7 @@
  */
 
 /**
- * @author S�bastien
+ * @author Sébastien
  * The class master encapsulate all the metaheuristics representation of the problems, manage switching from one representation to another, and thus is fit for strategies implementation
  */
 public class Master {
@@ -48,5 +48,27 @@ public class Master {
 		/*Update the others alphas*/
 		GA.updateAlpha(ACO.getAlpha());
 		SA.updateAlpha(ACO.getAlpha());
+	}
+	
+	/*Stratégies, mode d'emploi
+	 * Appeler les heuristiques dans l'ordre souhaité
+	 * Récupérer la valeur du dernier algorithme lancé dans la stratégie, l'ajouter dans la liste des précédents alphas
+	 * -> Nécessaire pour les tabous
+	 * Réinitialiser les problèmes
+	 */
+	public void strat_2h_Adele1() {
+		this.ACO_activate((double)(40/60));
+		this.GA_activate((double)(40/60));
+		this.SA_activate((double)(40/60));
+		alphas.add(SA.getSchedule());
+		this.reinit();
+	}
+	
+	public void strat_2h_Adele2() {
+		this.ACO_activate(0.5);
+		this.GA_activate(0.5);
+		this.SA_activate(1);
+		alphas.add(SA.getSchedule());
+		this.reinit();
 	}
 }
