@@ -1,29 +1,37 @@
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * @author Sébastien
  * A class to represent a telescope schedule
- * AKA Individual in Genetic algorithm
  */
 public class Schedule {
 
 	protected int ID;
-	protected LinkedList<Plan> planning;
-	protected int value;
+	protected int[] nuits_choisies;
+	protected Etoile[] etoiles;
+	/*Pour chaque etoiles, une nuit (dans laquelle l'étoile est visible !) est associée*/
 	
 	/**
-	 * Constructor for a schedule
-	 * @param plans: a linkedlist of Plan
+	 * Constructor of a schedule
+	 * @param ID: ID of the schedule
+	 * @param nuits: the night we do the observation of the star
+	 * @param etoiles: the star database
 	 */
-	public Schedule(int ID, LinkedList<Plan> plans) {
+	public Schedule(int ID, int[] nuits, Etoile[] etoiles) {
 		this.ID = ID;
-		this.planning = plans;
-		this.computeValue();
+		this.nuits_choisies = nuits;
+		this.etoiles = etoiles;
 	}
 	
+	public Schedule(Schedule solution) {
+		this.ID = solution.getID()+1;
+		this.nuits_choisies = solution.getStarsNights().clone();
+		this.etoiles = solution.getStars();
+	}
+
 	/**
-	 * Accessor to the ID of the schedule
+	 * Return the ID of the schedule
 	 * @return the ID of the schedule
 	 */
 	public int getID() {
@@ -31,53 +39,130 @@ public class Schedule {
 	}
 	
 	/**
-	 * Accessor to the value of the schedule
-	 * @return the value of the schedule
+	 * Give a string representation of a schedule
+	 * @return a string representation of the schedule
 	 */
-	public int getValue() {
-		return this.value;
+	public String toString() {
+		String str = "";
+		for(int i = 0; i<nuits_choisies.length;i++){
+			str += nuits_choisies[i]+" ";
+		}
+		return str;
 	}
 	
 	/**
-	 * A method to check if the current schedule is valid
-	 * Check:
-	 * -same star not twice
-	 * -all plan are compatible with each other
-	 * @return true if the schedule is valid
+	 * Return the night chosen for a star
+	 * @param i: the star we want to know more about
+	 * @return the night chosen for this star
 	 */
-	protected boolean isValid() {
-		boolean valid = true;
-		Iterator<Plan> i = planning.iterator();
-		while(i.hasNext()) {
-			Plan p = i.next();
-			Iterator<Plan> i2 = planning.iterator();
-			while(i2.hasNext()) {
-				Plan p2 = i2.next();
-				if(p.getStar() == p2.getStar() || !p.isCompatible(p2)) {
-					valid = false;
-					break;
+	public int getStarNight(int i) {
+		return nuits_choisies[i];
+	}
+	
+	public int[] getStarsNights() {
+		return nuits_choisies.clone();
+	}
+	
+	public Etoile[] getStars() {
+		return etoiles;
+	}
+	
+	/**
+	 * Change a night chosen for a star
+	 */
+	public void randomChange() {
+		Random rand = new Random();
+		int change = rand.nextInt(nuits_choisies.length);
+		nuits_choisies[change] = etoiles[change].randomNight();
+	}
+	
+	public void print() {
+		int valeur = 0;
+		int valeurmax = 0;
+		for(int i = 0; i<etoiles.length;i++) {
+			valeurmax+=etoiles[i].getPriority();
+		}
+		
+		int nuitact = 0;
+		while(valeur<valeurmax) {
+			System.out.println("Nuit "+nuitact);
+			for(int i = 0; i <nuits_choisies.length;i++) {
+				if(nuits_choisies[i] == nuitact) {
+					System.out.println("Etoile "+i);
+					valeur+=etoiles[i].getPriority();
 				}
 			}
-			if(!valid) { break; }
+			nuitact++;
 		}
-		return valid;
 	}
 	
 	/**
-	 * A method to compute the value of the proposed schedule
-	 * @return the value of the schedule. If not valid return 0
+	 * Return the value of the schedule
+	 * @return the value of the schedule
 	 */
-	protected void computeValue() {
-		if(this.isValid()) {
-			int value = 0;
-			Iterator<Plan> i = planning.iterator();
-			while(i.hasNext()) {
-				Plan p = i.next();
-				value += p.getValue();
-			}
-			this.value = value;
-		} else {
-			this.value = 0;
+	public int getValue(boolean FF) {
+		int valeur = 0;
+		int valeurmax = 0;
+		int valeurPlanifiee = 0;
+		for(int i = 0; i<etoiles.length;i++) {
+			valeurmax+=etoiles[i].getPriority();
 		}
+		
+		int nuit_actuelle = 0;
+		while(valeur<valeurmax) {
+			/*Constituer les linked list utiles: night importance starID*/
+			LinkedList<Night> nights = new LinkedList<Night>();
+			LinkedList<Integer> imp = new LinkedList<Integer>();
+			LinkedList<Integer> starID = new LinkedList<Integer>();
+			/*Chercher les etoiles de la nuit*/
+			for(int i = 0; i <nuits_choisies.length;i++) {
+				if(nuits_choisies[i] == nuit_actuelle) {
+					nights.add(etoiles[i].getNightID(nuit_actuelle));
+					imp.add(etoiles[i].getPriority());
+					valeur += etoiles[i].getPriority();
+					starID.add(etoiles[i].getID());
+				}
+			}
+			if(!nights.isEmpty()) {
+				if(FF) {
+					valeurPlanifiee += OptimizedNightPlanner.value_FF(nights, imp, starID);
+				} else {
+					valeurPlanifiee += OptimizedNightPlanner.value_mv(nights, imp);
+				}
+				
+			}
+			nuit_actuelle++;
+		}
+		
+		return valeurPlanifiee;
+	}
+	
+	/**
+	 * A method to evolve an individual given a probability that a gene will change (for each gene)
+	 * @param taux_mutation: a chance that a gene will change
+	 */
+	public Schedule mutate(double taux_mutation) {
+		int[] nuits = this.getStarsNights();
+		for(int i = 0; i<etoiles.length;i++) {
+			if(Math.random()<= taux_mutation) {
+				nuits[i] = etoiles[i].randomNight();
+			}
+		}
+		return new Schedule(this.ID,nuits,this.etoiles);
+	}
+
+	/**
+	 * Crossover between this individual and another
+	 * @param i2: the other individual
+	 * @return a new generation of individual
+	 */
+	public Schedule crossover(Schedule i2, double taux_uniforme) {
+		int[] nuits = this.getStarsNights();
+		for(int i = 0; i<nuits_choisies.length;i++){
+			if(Math.random()<=taux_uniforme) {
+				nuits[i] = i2.getStarNight(i);
+			}
+		}
+		return new Schedule(this.ID,nuits,this.etoiles);
 	}
 }

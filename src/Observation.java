@@ -1,85 +1,70 @@
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
 
-/**
- * @author Sébastien
- *
- */
 public class Observation {
-	private int ID;
-	private int priority;
-	private LinkedList<Night> nuits;
-	
+	private Etoile e;
+	private double debut;
+	private double fin ;
+	private double duree;
+	private double proba;
+	private int IDnuit;
+	private int IDetoile;
 	/**
-	 * Constructor of an observation (AKA a star to study)
-	 * @param ID: ID of the observation
-	 * @param priority: priority of the observation
-	 * @param nuits: nights when the observation is feasible
+	 * a constructor for an observation
+	 * @param e the star we want to observe
+	 * @param i the id of the night we want to watch the star
 	 */
-	public Observation(int ID, int priority, LinkedList<Night> nuits) {
-		this.ID = ID;
-		this.priority = priority;
-		this.nuits = nuits;
-	}
-	
-	/**
-	 * Accessor to the ID of the observation
-	 * @return the ID of the observation
-	 */
-	public int getID() {
-		return this.ID;
-	}
-	
-	/**
-	 * Accessor to the priority of the observation
-	 * @return: the priority of the observation
-	 */
-	public int getPriority() {
-		return this.priority;
-	}
-	
-	/**
-	 * Test if the observation is feasible a specified night
-	 * @param night: the night we want to test
-	 * @return true if feasible
-	 */
-	public boolean feasibleAt(int night) {
-		Iterator<Night> i = nuits.iterator();
-		while(i.hasNext()) {
-			Night n = i.next();
-			if(n.getID() == night) {
-				return true;
+	public Observation( Etoile e, int i) {
+		this.e=e;
+		for(int k =0;k<e.getNbNight();k++) {
+			if(e.getNight(k).getID()==i) {
+				this.debut=e.getNight(k).getDebut();
+				this.fin=e.getNight(k).getFin();
+				this.duree=e.getNight(k).getDuree();
+				this.IDnuit=i;
 			}
 		}
-		return false;
+		
+		this.IDetoile=e.getID();
 	}
 	
-	/**
-	 * Accessor to a night
-	 * @param night: number of the night 
-	 * @return the night specified, null if non feasible
-	 */
-	public Night getNight(int night) {
-		Iterator<Night> i = nuits.iterator();
-		while(i.hasNext()) {
-			Night n = i.next();
-			if(n.getID() == night) {
-				return n;
-			}
-			if(n.getID() > night) {
-				return null;
-			}
-		}
-		return null;
+	public int getIDnuit() {
+		return this.IDnuit;
 	}
 	
-	/**
-	 * Generate a random plan for this observation
-	 * @return a random plan
-	 */
-	public Plan randomPlan() {
-		Random rand = new Random();
-		return new Plan(this, nuits.get(rand.nextInt(nuits.size())));
+	public int getIDetoile() {
+		return this.IDetoile;
+	}
+	
+	public double getDebut() {
+		return this.debut;
+	}
+	
+	public double getFin() {
+		return this.fin;
+	}
+	
+	
+	
+	public double getDuree() {
+		return this.duree;
+	}
+	
+	public double getProba() {
+		return this.proba;
+	}
+	
+	public boolean estCompatible(Observation o) {
+		boolean resultat= true;
+		
+		if(o.getDebut()>this.getDebut()&&o.getDebut()<this.getDebut()+this.duree) resultat=false;
+		if(this.getDebut()>o.getDebut()&&this.getDebut()<o.getDebut()+o.duree) resultat = false;
+		return resultat;
+	}
+	
+	public double getInterest() {
+		return this.e.getPriority();
+	}
+	
+	public void setProba(double x) {
+		this.proba=x;
 	}
 }

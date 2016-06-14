@@ -25,11 +25,14 @@ public class Filehandler {
 	 * @param data: an array with the data for all night concerning our observation
 	 * @return the finalized observation
 	 */
-	private static Observation stringhandler_observation(String line, LinkedList<Night> data) {
+	private static Etoile stringhandler_observation(String line, LinkedList<Night> data) {
 		int id = Integer.parseInt(line.substring(line.indexOf(" ")+1, line.indexOf("p")-1));
 		int priority = Integer.parseInt(line.substring(line.indexOf(":")+2, line.length()));
-		return new Observation(id, priority, data);
+		
+		return new Etoile(id, priority, data);
 	}
+	
+
 	
 	/**
 	 * A static method to return a night given a string at the specified format
@@ -41,14 +44,23 @@ public class Filehandler {
 		int id = Integer.parseInt(line.substring(line.indexOf(" ")+1, line.indexOf(":")));
 		int deb = 0;
 		int fin = 0;
+		int duree = 0;
 		if(line.indexOf(":")+1 != line.length()-1) {
 			deb = Integer.parseInt(line.substring(line.indexOf("r")+2, line.indexOf("m")-1));
 			fin = Integer.parseInt(line.substring(line.indexOf("d")+2, line.length()-1));
+			duree = Integer.parseInt(line.substring(line.indexOf("p")+2, line.indexOf("r")-1));
 		}
-		return new Night(id, deb, fin);
+		return new Night(id, deb, fin, duree);
 	}
 	
-	public static Observation[] read(String src) {
+
+	
+	/**
+	 * A static method to read a complete file
+	 * @param src: name of the file
+	 * @return all the Etoile in an array
+	 */
+	public static Etoile[] read(String src) {
 		Scanner in;
 		try {
 			File file = new File("rsc",src);
@@ -62,7 +74,7 @@ public class Filehandler {
 			 */
 			int nb_night = Filehandler.stringhandler_int(in.nextLine());
 			int nb_obs = Filehandler.stringhandler_int(in.nextLine());
-			Observation[] etoiles = new Observation[nb_obs];
+			Etoile[] etoiles = new Etoile[nb_obs];
 			
 			//then we initialize each observation AKA star
 			for(int i = 0;i<nb_obs;i++) {
@@ -79,9 +91,10 @@ public class Filehandler {
 			in.close();
 			return etoiles;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
+	
+	
 }

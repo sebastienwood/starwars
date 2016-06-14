@@ -9,41 +9,107 @@ import java.util.LinkedList;
  */
 public class Population {
 
-	private LinkedList<Individu> population;
+	/* Un individu représente un schedule*/
+	private LinkedList<Schedule> population;
 	
 	/**
 	 * Constructor for the genetic method
 	 * @param src: name of the file stored in rsc folder
 	 */
 	public Population() {
-		this.population = new LinkedList<Individu>();
+		this.population = new LinkedList<Schedule>();
 	}
 	
 	/**
 	 * Add an individual to the population
 	 * @param s: schedule to add
 	 */
-	public void addIndividual(Individu s) {
+	public void addIndividual(Schedule s) {
 		population.add(s);
+	}
+	
+	public int getSize() {
+		return population.size();
 	}
 	
 	/**
 	 * Accessor to the best schedule of the population
 	 * @return the best schedule regarding to the value
 	 */
-	private Individu getAlpha() {
-		Iterator<Individu> i = population.iterator();
-		Individu best = i.next();
+	public Schedule getAlpha() {
+		Iterator<Schedule> i = population.iterator();
+		Schedule best = i.next();
+		int bestvalue = best.getValue(true);
 		while(i.hasNext()) {
-			Individu s = i.next();
-			if(s.getValue()> best.getValue()) {
+			Schedule s = i.next();
+			int challenger = s.getValue(true);
+			//System.out.print(challenger+" ");
+			if(challenger> bestvalue) {
 				best = s;
+				bestvalue = challenger;
 			}
 		}
 		return best;
 	}
 	
-	public void evolve() {
+	/**
+	 * A method to confront Individual that keeps the best
+	 * @param size: the number of individual confronting
+	 * @return the one with the best value
+	 */
+	public Schedule tournoi(int size) {
+		Population p = new Population();
+		for(int i = 0; i<size;i++) {
+			p.addIndividual(population.get((int)(Math.random()*population.size())));
+		}
+		return p.getAlpha();
+	}
+
+	public boolean sameAlpha(Population newGen) {
+		if(this.getAlpha() == newGen.getAlpha()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean samePop(Population newGen) {
+		Iterator<Schedule> i = population.iterator();
+		while(i.hasNext()) {
+			Schedule ind = i.next();
+			if(!newGen.has(ind)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean has(Schedule in) {
+		Iterator<Schedule> i = population.iterator();
+		while(i.hasNext()) {
+			Schedule ind = i.next();
+			if(ind.equals(in)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void print() {
+		Iterator<Schedule> i = population.iterator();
+		while(i.hasNext()) {
+			Schedule ind = i.next();
+			System.out.println(ind.toString());
+		}
+	}
+
+	public void switchRandom(Schedule newAlpha) {
+		population.remove((int)(Math.random()*population.size()));
+		population.add(newAlpha);
+	}
+
+	public void clear() {
+		population.clear();
 		
 	}
 }
