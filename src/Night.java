@@ -1,6 +1,6 @@
 /**
  * 
- * @author Sébastien
+ * @author SÃ©bastien
  *
  */
 public class Night {
@@ -53,21 +53,5 @@ public class Night {
 	 */
 	public int getDuree() {
 		return this.duree;
-	}
-	
-	public int[] planCentered() {
-		int[] data = new int[2]; data[0] = debut; data[1] = fin;
-		boolean turn = true;
-		while(data[1]-data[0] != duree) {
-			if(turn) {
-				turn = !turn;
-				data[1]--;
-			} else {
-				turn = !turn;
-				data[0]++;
-			}
-		}
-		
-		return data;
 	}
 }
