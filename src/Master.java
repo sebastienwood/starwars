@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * 
  */
@@ -9,11 +11,11 @@
 public class Master {
 
 	private Etoile[] data;
-	private Schedule alpha;
+	private LinkedList<Schedule> alphas;
 	
 	private Genetic GA;
 	private Recuit SA;
-	private Colonie ACO;
+	private ScheduleQ ACO;
 	
 	/**
 	 * Constructor of the Master class, initialize each representation
@@ -23,7 +25,13 @@ public class Master {
 		this.data = Filehandler.read(src);
 		this.GA = new Genetic(data,500);
 		this.SA = new Recuit(GA.getAlpha());
-		this.ACO = new Colonie(data.length);
+		this.ACO = new ScheduleQ(data.length);
+	}
+	
+	public void reinit() {
+		this.GA = new Genetic(data,500);
+		this.SA = new Recuit(GA.getAlpha());
+		this.ACO = new ScheduleQ(data.length);
 	}
 	
 	public void GA_activate(double timeinH) {
@@ -46,8 +54,8 @@ public class Master {
 		/*Run the ACO*/
 		ACO.live(timeinH);
 		/*Update the others alphas*/
-		GA.updateAlpha(ACO.getAlpha());
-		SA.updateAlpha(ACO.getAlpha());
+		GA.updateAlpha(ACO.bestSchedule());
+		SA.updateAlpha(ACO.bestSchedule());
 	}
 	
 	/*Stratégies, mode d'emploi

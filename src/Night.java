@@ -1,6 +1,6 @@
 /**
  * 
- * @author SÃ©bastien
+ * @author Sébastien
  *
  */
 public class Night {

@@ -13,6 +13,13 @@ public class Recuit {
 		this.conditionarret_temp = arrettemp;
 	}
 	
+	public Recuit(Schedule sol) {
+		this.solution = sol;
+		this.temp = 80;
+		this.taux_ref = 0.1;
+		this.conditionarret_temp = 5;
+	}
+	
 	private boolean critMetropolis(double delta, double temp) {
 		boolean crit = false;
 		if(delta>=0) {
@@ -53,4 +60,29 @@ public class Recuit {
 			return solution.getValue(false);
 		}
 	}
+	
+	public Schedule getSchedule() {
+		return this.solution;
+	}
+	
+	public void updateAlpha(Schedule newAlpha) {
+		this.solution = newAlpha;
+	}
+	
+	/**
+	 * A methode to give life to the population for a given time in hours
+	 * @param i: a time in hours
+	 */
+	public void live(double i) {
+		double fin = System.currentTimeMillis()+(i*3600*1000);
+		int gen = 0;
+		while(System.currentTimeMillis()<fin) {
+			this.activate();
+			gen++;
+			//System.out.println(pop.getAlpha().toString());
+			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue(true));
+		}
+		System.out.println(this.getValue(false));		
+	}
+
 }

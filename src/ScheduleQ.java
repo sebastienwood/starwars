@@ -240,7 +240,7 @@ public class ScheduleQ {
 	 * @param y
 	 * @return
 	 */
-	public LinkedList<Observation> AntAlgorithm(Etoile[] stars, int n, int k, double x, double y) {
+	public LinkedList<Observation> antAlgorithm(Etoile[] stars, int n, int k, double x, double y) {
 		LinkedList<Observation> observations= this.Organize(stars);
 		this.setProbas(observations);
 		LinkedList<Observation> bestway = new LinkedList<>();
@@ -308,7 +308,7 @@ public class ScheduleQ {
 		return tab;
 	}
 	
-	public LinkedList<Observation> AntColonyFor(double t, Etoile[] stars, int n, int k, double x, double y) {
+	public LinkedList<Observation> antColonyFor(double t, Etoile[] stars, int n, int k, double x, double y) {
 		long time=System.currentTimeMillis();
 		LinkedList<Observation> observations= this.Organize(stars);
 		this.setProbas(observations);
@@ -333,7 +333,7 @@ public class ScheduleQ {
 		return bestway;
 	}
 
-	public LinkedList<Schedule> SendAnts(double n, String txt) {
+	public LinkedList<Schedule> sendAnts(double n, String txt) {
 		LinkedList<Schedule> ants = new LinkedList<>();
 		Etoile[] data= Filehandler.read(txt);
 		for(int i=0;i<n;i++) {
@@ -345,7 +345,7 @@ public class ScheduleQ {
 		return ants;
 	}
 	
-	public Schedule BestSchedule(double n, String txt) {
+	public Schedule bestSchedule(double n, String txt) {
 		Etoile[] data= Filehandler.read(txt);
 		this.AntAlgorithm(data, 1,1,0.001, 0.0005);
 		int[] tableau=this.communicateNights();
@@ -363,7 +363,7 @@ public class ScheduleQ {
 		return bestSchedule;
 	}
 	
-	public LinkedList<Observation> UpdateAlpha(Schedule sc) {
+	public LinkedList<Observation> updateAlpha(Schedule sc) {
 		LinkedList<Observation> observations= new LinkedList<>();
 		Etoile[] stars= sc.getStars();
 		int[] nights=sc.getStarsNights();
