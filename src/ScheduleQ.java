@@ -6,14 +6,14 @@ import java.util.*;
  * @author Sébastien
  * A class to represent a telescope schedule
  */
-public class Colonie {
+public class ScheduleQ {
 
 	protected int ID;
-	protected LinkedList<ObservationQ> planning;
+	protected LinkedList<Observation> planning;
 	private int NbEtoiles;
 	
 	
-	public Colonie(int n) {
+	public ScheduleQ(int n) {
 		this.NbEtoiles=n;
 	}
 	
@@ -39,11 +39,11 @@ public class Colonie {
 	 * @param stars les données fournies par Filehandler
 	 * @return la liste de toutes les observations possibles et faisables pour notre problème
 	 */
-	public LinkedList<ObservationQ> Organize(Etoile[] stars) {
-		LinkedList<ObservationQ> observations = new LinkedList<>();
+	public LinkedList<Observation> Organize(Etoile[] stars) {
+		LinkedList<Observation> observations = new LinkedList<>();
 		for (int i=0;i<stars.length;i++) {          //pour chaque étoile
 			for (int j=0;j<stars[i].getNbNight();j++) {            //pour chaque nuit où l'étoile apparait
-				ObservationQ o = new ObservationQ ( stars[i], stars[i].getNight(j).getID()) ;  
+				Observation o = new Observation ( stars[i], stars[i].getNight(j).getID()) ;  
 				observations.add(o);
 			}
 		}
@@ -54,17 +54,17 @@ public class Colonie {
 	 * une méthode pour initialiser les phéromones
 	 * @param observations la liste d'observations à initialiser
 	 */
-	public void setProbas(LinkedList<ObservationQ> observations ) {
-		Iterator<ObservationQ> iter = observations.iterator();
+	public void setProbas(LinkedList<Observation> observations ) {
+		Iterator<Observation> iter = observations.iterator();
 		int NbNuits=0;
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			if(o.getIDnuit()>NbNuits) NbNuits=o.getIDnuit();  //calcul du nombre de nuits total
 		}
 		int[] tab = new int[NbNuits+1];		// construction d'un tableau qui compte pour chaque nuit le nombre d'étoiles pouvant être observées cette nuit là
 		iter= observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			tab[o.getIDnuit()]+=1;
 		}
 //		double[] tableau= new double[NbNuits+1];
@@ -76,17 +76,17 @@ public class Colonie {
 	
 	}
 	
-	public void setProbasAccordingToInterest (LinkedList<ObservationQ> observations ) {
-		Iterator<ObservationQ> iter = observations.iterator();
+	public void setProbasAccordingToInterest (LinkedList<Observation> observations ) {
+		Iterator<Observation> iter = observations.iterator();
 		int NbNuits=0;
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			if(o.getIDnuit()>NbNuits) NbNuits=o.getIDnuit();  //calcul du nombre de nuits total
 		}
 		double[] tab= new double[NbNuits+1];
 		iter = observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			tab[o.getIDnuit()]+=o.getProba();
 		}
 		for(int j=0;j<observations.size();j++) {
@@ -102,14 +102,14 @@ public class Colonie {
 	 * @param x the amount of pheromons we want to add on the best path (between 0 and 1)
 	 * @param y the reduction of pheromons into the wild
 	 */
-	public void spreadPheromons(LinkedList<ObservationQ> observations, LinkedList<ObservationQ> bestway,double x, double y) {
+	public void spreadPheromons(LinkedList<Observation> observations, LinkedList<Observation> bestway,double x, double y) {
 		int[] tab = new int[observations.size()];
 		for(int i=0;i<tab.length;i++) {
 			tab[i]=0;
 		}
-		Iterator<ObservationQ> iter = bestway.iterator();
+		Iterator<Observation> iter = bestway.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o=iter.next();
+			Observation o=iter.next();
 			tab[o.getIDetoile()]=1;
 		}
 		for(int i=0;i<observations.size();i++) {
@@ -120,38 +120,38 @@ public class Colonie {
 		}
 	}
 	
-	public LinkedList<ObservationQ> fourmi(LinkedList<ObservationQ> observations) {
+	public LinkedList<Observation> fourmi(LinkedList<Observation> observations) {
 		
-		LinkedList<ObservationQ> blacklist = new LinkedList<>(); // contient les observations des étoiles déjà observées
-		LinkedList<ObservationQ> chemin = new LinkedList<>(); // les observations que l'on va effectuer
+		LinkedList<Observation> blacklist = new LinkedList<>(); // contient les observations des étoiles déjà observées
+		LinkedList<Observation> chemin = new LinkedList<>(); // les observations que l'on va effectuer
 		int NbNuitMax=1;
-		Iterator<ObservationQ> iter= observations.iterator();
+		Iterator<Observation> iter= observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			if(o.getIDnuit()>NbNuitMax) {
 				NbNuitMax=o.getIDnuit();
 			}
 		}
 		//pour chaque nuit
 		for (int i=0;i<=NbNuitMax;i++) {
-			LinkedList<ObservationQ> dispo = new LinkedList<>();
+			LinkedList<Observation> dispo = new LinkedList<>();
 			iter= observations.iterator(); // si ca marche pas change le nom de l'iterator et redéclare un nouvel itérateur
 			//on remplit la liste avec les étoiles observables cette nuit-là
 			while(iter.hasNext()) {
-				ObservationQ o = iter.next();
+				Observation o = iter.next();
 				if(o.getIDnuit()==i) {
 					dispo.add(o);
 				}
 			}
 			//on retire toutes les étoiles déja observées
-			Iterator<ObservationQ> iterDispo= dispo.iterator();
-			LinkedList<ObservationQ> dispoNonBlacklistee = new LinkedList<>();
+			Iterator<Observation> iterDispo= dispo.iterator();
+			LinkedList<Observation> dispoNonBlacklistee = new LinkedList<>();
 			while(iterDispo.hasNext()) {
-				ObservationQ o=iterDispo.next();
-				Iterator<ObservationQ> iterBlacklist =blacklist.iterator();
+				Observation o=iterDispo.next();
+				Iterator<Observation> iterBlacklist =blacklist.iterator();
 				boolean estBlacklistee=false;
 				while(iterBlacklist.hasNext() && estBlacklistee==false) {
-					ObservationQ Obs = iterBlacklist.next();
+					Observation Obs = iterBlacklist.next();
 					if (Obs.getIDetoile()== o.getIDetoile()) {
 						estBlacklistee=true;
 					}
@@ -179,15 +179,15 @@ public class Colonie {
 						a++;
 					}
 				}
-				ObservationQ choisie= dispo.get(a); 
+				Observation choisie= dispo.get(a); 
 				chemin.add(choisie); // on remplit ensuite la liste en se basant sur les phéromones
 				blacklist.add(choisie); // on ajoute l'observation à la liste des obs déjà observées
 				dispo.remove(choisie);
 				iterDispo=dispo.iterator();
-				LinkedList<ObservationQ> compatibles = new LinkedList<>();
+				LinkedList<Observation> compatibles = new LinkedList<>();
 				//on enleve toutes les observations qui ne sont pas compatibles avec les observations déjà choisies
 				while(iterDispo.hasNext()) { 
-					ObservationQ o = iterDispo.next();
+					Observation o = iterDispo.next();
 					if (choisie.estCompatible(o) ) {
 						compatibles.add(o);
 					}
@@ -203,11 +203,11 @@ public class Colonie {
 	 * @param observations le planning d'observations
 	 * @return l'intérêt du planning
 	 */
-	public double getGlobalInterest(LinkedList<ObservationQ> observations) {
+	public int getGlobalInterest(LinkedList<Observation> observations) {
 		int interet=0;
-		Iterator<ObservationQ> iter= observations.iterator();
+		Iterator<Observation> iter= observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			interet+=o.getInterest();
 		}
 		return interet;
@@ -219,9 +219,9 @@ public class Colonie {
 	 * @param n the number of ants sent
 	 * @return the best path found by our ants 
 	 */
-	public LinkedList<ObservationQ> LetTheAntsOut(LinkedList<ObservationQ> observations, int n) {
-		LinkedList<ObservationQ> bestway=new LinkedList<ObservationQ>();
-		LinkedList<ObservationQ> currentant = new LinkedList<ObservationQ>();
+	public LinkedList<Observation> LetTheAntsOut(LinkedList<Observation> observations, int n) {
+		LinkedList<Observation> bestway=new LinkedList<Observation>();
+		LinkedList<Observation> currentant = new LinkedList<Observation>();
 		for (int i=0;i<n;i++) {
 			currentant=this.fourmi(observations);
 			if (this.getGlobalInterest(currentant)>this.getGlobalInterest(bestway)) {
@@ -240,12 +240,12 @@ public class Colonie {
 	 * @param y
 	 * @return
 	 */
-	public LinkedList<ObservationQ> AntAlgorithm(Etoile[] stars, int n, int k, double x, double y) {
-		LinkedList<ObservationQ> observations= this.Organize(stars);
+	public LinkedList<Observation> AntAlgorithm(Etoile[] stars, int n, int k, double x, double y) {
+		LinkedList<Observation> observations= this.Organize(stars);
 		this.setProbas(observations);
-		LinkedList<ObservationQ> bestway = new LinkedList<>();
+		LinkedList<Observation> bestway = new LinkedList<>();
 		for(int i=0;i<k;i++) {
-			LinkedList<ObservationQ> bestgen = this.LetTheAntsOut(observations, n);
+			LinkedList<Observation> bestgen = this.LetTheAntsOut(observations, n);
 			if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
 				bestway=bestgen;
 			}
@@ -256,12 +256,12 @@ public class Colonie {
 		return bestway;
 	}
 	
-	public boolean check(LinkedList<ObservationQ> observations) {
+	public boolean check(LinkedList<Observation> observations) {
 		boolean answer=true;
 		boolean[] tab = new boolean[NbEtoiles+1];
-		Iterator<ObservationQ> iter=observations.iterator();
+		Iterator<Observation> iter=observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			if(tab[o.getIDetoile()]==false) {
 				tab[o.getIDetoile()]=true;
 			}
@@ -270,13 +270,13 @@ public class Colonie {
 		iter = observations.iterator();
 		int NbNuits=0;
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			if(o.getIDnuit()>NbNuits) NbNuits=o.getIDnuit();  //calcul du nombre de nuits total
 		}
 		int[] nuits = new int[NbNuits+1];
 		iter = observations.iterator();
 		while(iter.hasNext()) {
-			ObservationQ o = iter.next();
+			Observation o = iter.next();
 			nuits[o.getIDnuit()]++;
 		}
 //		for(int i=0;i<nuits.length;i++) {
@@ -286,19 +286,95 @@ public class Colonie {
 	}
 	
 	public int[] communicateNights() {
-		int[] tab = new int[this.planning.size()];
-		for(int i=0;i<this.planning.size();i++) {
-			tab[i]=planning.get(i).getIDnuit();
+		int[] tab = new int[NbEtoiles];
+		for(int i=0;i<tab.length;i++) {
+			tab[i]=-1;
+		}
+		int NbNuits=0;
+		Iterator<Observation> iter = this.planning.iterator();
+		while(iter.hasNext()) {
+			Observation o=iter.next();
+			tab[o.getIDetoile()]=o.getIDnuit();
+			if(o.getIDnuit()>NbNuits) NbNuits=o.getIDnuit();
+		}
+		Random rand = new Random();
+		
+		for(int i=0;i<tab.length;i++) {
+			if(tab[i]==-1) {
+				tab[i]= rand.nextInt(NbNuits); 
+				
+			}
 		}
 		return tab;
 	}
 	
-	public int[] communicateStars() {
-		int[] tab = new int[this.planning.size()];
-		for(int i=0;i<this.planning.size();i++) {
-			tab[i]=planning.get(i).getIDetoile();
+	public LinkedList<Observation> AntColonyFor(double t, Etoile[] stars, int n, int k, double x, double y) {
+		long time=System.currentTimeMillis();
+		LinkedList<Observation> observations= this.Organize(stars);
+		this.setProbas(observations);
+		LinkedList<Observation> bestway = new LinkedList<>();
+		LinkedList<Observation> bestgen = this.LetTheAntsOut(observations, n);
+		if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
+			bestway=bestgen;
 		}
-		return tab;
+		System.out.println(this.getGlobalInterest(bestway));
+		this.spreadPheromons(observations, bestgen, x, y);
+		long timeout=System.currentTimeMillis();
+		while(timeout-time<t*3600*1000) {
+			bestgen = this.LetTheAntsOut(observations, n);
+			if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
+				bestway=bestgen;
+			}
+			System.out.println(this.getGlobalInterest(bestway));
+			this.spreadPheromons(observations, bestgen, x, y);
+			timeout=System.currentTimeMillis();
+		}
+		this.planning=bestway;
+		return bestway;
+	}
+
+	public LinkedList<Schedule> SendAnts(double n, String txt) {
+		LinkedList<Schedule> ants = new LinkedList<>();
+		Etoile[] data= Filehandler.read(txt);
+		for(int i=0;i<n;i++) {
+			LinkedList<Observation> observations= this.AntAlgorithm(data, 5, 5, 0.001, 0.0005);
+			int[] tab=this.communicateNights();
+			Schedule sc= new Schedule(i, tab, data);
+			ants.add(sc);
+		}
+		return ants;
+	}
+	
+	public Schedule BestSchedule(double n, String txt) {
+		Etoile[] data= Filehandler.read(txt);
+		this.AntAlgorithm(data, 1,1,0.001, 0.0005);
+		int[] tableau=this.communicateNights();
+		Schedule bestSchedule= new Schedule(1, tableau, data);
+		int bestInterest=0;
+		for(int i=0;i<n;i++) {
+			LinkedList<Observation> observations= this.AntAlgorithm(data, 5, 5, 0.001, 0.0005);
+			if(this.getGlobalInterest(observations)>bestInterest) {
+				bestInterest=this.getGlobalInterest(observations);
+				int[] tab=this.communicateNights();
+				Schedule sc= new Schedule(i, tab, data);
+				bestSchedule=sc;
+			}
+		}
+		return bestSchedule;
+	}
+	
+	public LinkedList<Observation> UpdateAlpha(Schedule sc) {
+		LinkedList<Observation> observations= new LinkedList<>();
+		Etoile[] stars= sc.getStars();
+		int[] nights=sc.getStarsNights();
+		for(int i=0;i<stars.length;i++) {
+			Observation o= new Observation(stars[i],nights[i]);
+			observations.add(o);
+		}
+		this.planning=observations;
+		
+		return observations;
+		
 	}
 	
 }

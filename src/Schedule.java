@@ -117,7 +117,7 @@ public class Schedule {
 			/*Chercher les etoiles de la nuit*/
 			for(int i = 0; i <nuits_choisies.length;i++) {
 				if(nuits_choisies[i] == nuit_actuelle) {
-					nights.add(etoiles[i].getNight(nuit_actuelle));
+					nights.add(etoiles[i].getNightID(nuit_actuelle));
 					imp.add(etoiles[i].getPriority());
 					valeur += etoiles[i].getPriority();
 					starID.add(etoiles[i].getID());
@@ -129,6 +129,7 @@ public class Schedule {
 				} else {
 					valeurPlanifiee += OptimizedNightPlanner.value_mv(nights, imp);
 				}
+				
 			}
 			nuit_actuelle++;
 		}
