@@ -18,6 +18,7 @@ public class Genetic {
 	
 	private Population pop;
 	private Etoile[] data;
+	//TODO: maybe get alpha to a variable stored in memory instead of looking for him each time
 	
 	/**
 	 * Constructor for the Genetic algorithm with customized parameters
@@ -52,7 +53,6 @@ public class Genetic {
 		
 		for(int i = 0; i< popsize; i ++) {
 			Schedule newOne = this.breed(i);
-			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
 	}
@@ -66,7 +66,6 @@ public class Genetic {
 		
 		for(int i = 0; i< popsize; i ++) {
 			Schedule newOne = this.breed(i);
-			//System.out.println(newOne.toString());
 			pop.addIndividual(newOne);
 		}
 	}
@@ -136,8 +135,12 @@ public class Genetic {
 	 * Return the best value of the population
 	 * @return the best value of the population
 	 */
-	public int getValue() {
-		return pop.getAlpha().getValue(true);
+	public int getValue(boolean FF) {
+			if(FF) {
+				return this.getAlpha().getValue();
+			} else {
+				return this.getAlpha().getValue(false);
+			}
 	}
 
 	/**
@@ -151,9 +154,9 @@ public class Genetic {
 			this.evolve();
 			gen++;
 			//System.out.println(pop.getAlpha().toString());
-			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue());
+			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue(true));
 		}
-		System.out.println(this.getValue());		
+		System.out.println(this.getValue(false));		
 	}
 
 	public Schedule getAlpha() {

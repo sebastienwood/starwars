@@ -39,10 +39,10 @@ public class Population {
 	public Schedule getAlpha() {
 		Iterator<Schedule> i = population.iterator();
 		Schedule best = i.next();
-		int bestvalue = best.getValue(true);
+		int bestvalue = best.getValue();
 		while(i.hasNext()) {
 			Schedule s = i.next();
-			int challenger = s.getValue(true);
+			int challenger = s.getValue();
 			//System.out.print(challenger+" ");
 			if(challenger> bestvalue) {
 				best = s;
@@ -109,7 +109,6 @@ public class Population {
 	}
 
 	public void clear() {
-		population.clear();
-		
+		population.clear();	
 	}
 }

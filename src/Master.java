@@ -23,15 +23,16 @@ public class Master {
 	 */
 	public Master(String src) {
 		this.data = Filehandler.read(src);
+		//TODO: optimize for 2min
 		this.GA = new Genetic(data,500);
 		this.SA = new Recuit(GA.getAlpha());
-		this.ACO = new ScheduleQ(data.length);
+		this.ACO = new ScheduleQ(data);
 	}
 	
 	public void reinit() {
 		this.GA = new Genetic(data,500);
 		this.SA = new Recuit(GA.getAlpha());
-		this.ACO = new ScheduleQ(data.length);
+		this.ACO = new ScheduleQ(data);
 	}
 	
 	public void GA_activate(double timeinH) {
@@ -54,8 +55,8 @@ public class Master {
 		/*Run the ACO*/
 		ACO.live(timeinH);
 		/*Update the others alphas*/
-		GA.updateAlpha(ACO.bestSchedule());
-		SA.updateAlpha(ACO.bestSchedule());
+		GA.updateAlpha(ACO.getAlpha());
+		SA.updateAlpha(ACO.getAlpha());
 	}
 	
 	/*Stratégies, mode d'emploi

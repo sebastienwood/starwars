@@ -38,24 +38,24 @@ public class Recuit {
 		Schedule bestSchedule = solution;
 		double temptemp = this.temp;
 		while(temptemp>conditionarret_temp) {
-			int best = solution.getValue(true);
+			int best = solution.getValue();
 			Schedule newOne = new Schedule(solution);
 			newOne.randomChange();
-			if(newOne.getValue(true) > bestSchedule.getValue(true)){
+			if(newOne.getValue() > bestSchedule.getValue()){
 				bestSchedule = newOne;
 			}
-			if(this.critMetropolis(newOne.getValue(true)-best, temptemp)) {
+			if(this.critMetropolis(newOne.getValue()-best, temptemp)) {
 				solution = newOne;
 			}
 			temptemp *= (1-taux_ref);
 		}
 		this.solution = bestSchedule;
-		return bestSchedule.getValue(true);
+		return bestSchedule.getValue();
 	}
 
 	public int getValue(boolean FF) {
 		if(FF) {
-			return solution.getValue(true);
+			return solution.getValue();
 		} else {
 			return solution.getValue(false);
 		}
