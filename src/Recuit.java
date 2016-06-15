@@ -1,5 +1,5 @@
 
-public class Recuit {
+public class Recuit extends Thread {
 
 	Schedule solution;
 	double temp;
@@ -85,4 +85,16 @@ public class Recuit {
 		System.out.println(this.getValue(false));		
 	}
 
+	@Override
+	public void run() {
+		double fin = System.currentTimeMillis()+(0.01*3600*1000);
+		int gen = 0;
+		while(System.currentTimeMillis()<fin) {
+			this.activate();
+			gen++;
+			//System.out.println(pop.getAlpha().toString());
+			System.out.println(gen+" "+(fin-System.currentTimeMillis())+" "+this.getValue(true));
+		}
+		System.out.println(this.getValue(false));
+	}
 }

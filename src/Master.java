@@ -56,7 +56,7 @@ public class Master {
 	
 	private void SA_activate(double timeinH) {
 		/*Run the SA*/
-		SA.live(timeinH);
+		SA.start();
 	}
 	
 	private void ACO_activate(double timeinH) {
