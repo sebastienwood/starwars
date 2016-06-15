@@ -7,9 +7,10 @@ import java.util.Random;
  */
 public class Schedule {
 
-	protected int ID;
-	protected int[] nuits_choisies;
-	protected Etoile[] etoiles;
+	private int ID;
+	private int[] nuits_choisies;
+	private Etoile[] etoiles;
+	private int value;
 	/*Pour chaque etoiles, une nuit (dans laquelle l'étoile est visible !) est associée*/
 	
 	/**
@@ -22,12 +23,18 @@ public class Schedule {
 		this.ID = ID;
 		this.nuits_choisies = nuits;
 		this.etoiles = etoiles;
+		this.value = this.getValue(true);
 	}
 	
+	/**
+	 * Attack of the clones
+	 * @param solution
+	 */
 	public Schedule(Schedule solution) {
 		this.ID = solution.getID()+1;
 		this.nuits_choisies = solution.getStarsNights().clone();
 		this.etoiles = solution.getStars();
+		this.value = solution.getValue();
 	}
 
 	/**
@@ -36,6 +43,10 @@ public class Schedule {
 	 */
 	public int getID() {
 		return this.ID;
+	}
+	
+	public int getValue() {
+		return this.value;
 	}
 	
 	/**
@@ -74,6 +85,7 @@ public class Schedule {
 		Random rand = new Random();
 		int change = rand.nextInt(nuits_choisies.length);
 		nuits_choisies[change] = etoiles[change].randomNight();
+		this.value=this.getValue(true);
 	}
 	
 	public void print() {
@@ -98,6 +110,7 @@ public class Schedule {
 	
 	/**
 	 * Return the value of the schedule
+	 * Warning ! Computation intensive
 	 * @return the value of the schedule
 	 */
 	public int getValue(boolean FF) {

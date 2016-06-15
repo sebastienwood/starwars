@@ -28,7 +28,7 @@ public class OptimizedNightPlanner {
 		/*Trier par ordre de fin croissante*/
 		for(int i = 0; i<donnees.length-1;i++) {
 			for(int j = i+1; j<donnees.length;j++) {
-				if(donnees[i].getFin() > donnees[j].getFin()) {
+				if(donnees[i].getDebut() > donnees[j].getDebut()) {
 					Night n1 = donnees[i];
 					Night n2 = donnees[j];
 					donnees[j] = n1;
@@ -46,6 +46,7 @@ public class OptimizedNightPlanner {
 				}
 			}
 		}
+		
 		
 		/*Prendre ceux qui sont compatibles*/
 		LinkedList<Integer> bons = new LinkedList<Integer>();
