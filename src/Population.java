@@ -32,6 +32,10 @@ public class Population {
 		return population.size();
 	}
 	
+	public Schedule getIndividual(int i) {
+		return population.get(i);
+	}
+	
 	/**
 	 * Accessor to the best schedule of the population
 	 * @return the best schedule regarding to the value

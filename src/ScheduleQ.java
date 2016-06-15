@@ -22,11 +22,11 @@ public class ScheduleQ {
 	private int nb_generations;
 	private int nb_ants;
 	
-	public ScheduleQ(Etoile[] data) {
+	public ScheduleQ(Etoile[] data, int pop) {
 		this.data = data;
 		this.pheromons_added = 0.001;
 		this.pheromons_fadding = 0.0005;
-		this.nb_ants = 5;
+		this.nb_ants = pop;
 		this.organize();
 		this.setProbas();
 	}
@@ -137,7 +137,7 @@ public class ScheduleQ {
 	 * Simulate the behavior of an ant
 	 * @return the path of the ant
 	 */
-	public LinkedList<Observation> fourmi() {
+	private LinkedList<Observation> fourmi() {
 		LinkedList<Observation> blacklist = new LinkedList<>(); // contient les observations des étoiles déjà observées
 		LinkedList<Observation> chemin = new LinkedList<>(); // les observations que l'on va effectuer
 		int NbNuitMax=1;
@@ -176,7 +176,7 @@ public class ScheduleQ {
 			}
 			dispo=dispoNonBlacklistee;
 //			System.out.println(dispo.size());
-			while(dispo.isEmpty()) {
+			while(!dispo.isEmpty()) {
 				// on choisit une observation en fonction de la proba associée (phéromones)
 				Random rand= new Random();
 				double proba=rand.nextDouble();
@@ -257,7 +257,6 @@ public class ScheduleQ {
 			if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
 				bestway=bestgen;
 			}
-			System.out.println(this.getGlobalInterest(bestway));
 			this.spreadPheromons(bestgen);
 		}
 		if(this.getGlobalInterest(bestway)>this.getGlobalInterest(bestAnt)) {
@@ -270,7 +269,7 @@ public class ScheduleQ {
 	 * For a given path, indicate the night each star is watched
 	 * @return
 	 */
-	public int[] communicateNights(LinkedList<Observation> path) {
+	private int[] communicateNights(LinkedList<Observation> path) {
 		int[] tab = new int[data.length];
 		for(int i=0;i<tab.length;i++) {
 			tab[i]=-1;
@@ -295,21 +294,25 @@ public class ScheduleQ {
 	 * @param t: a time in hour
 	 */
 	public void live(double t) {
+		t *= 3600*1000;
+		t += System.currentTimeMillis();
 		this.setProbas();
 		LinkedList<Observation> bestway = new LinkedList<>();
 		LinkedList<Observation> bestgen = this.letTheAntsOut();
 		if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
 			bestway=bestgen;
+			bestAnt = bestway;
 		}
-		System.out.println(this.getGlobalInterest(bestway));
+		System.out.println("ACO "+this.getGlobalInterest(bestway));
 		this.spreadPheromons(bestgen);
 		
-		while(System.currentTimeMillis()<t*3600*1000) {
+		while(System.currentTimeMillis()<t) {
 			bestgen = this.letTheAntsOut();
 			if (this.getGlobalInterest(bestgen)>=this.getGlobalInterest(bestway)) {
 				bestway=bestgen;
+				bestAnt = bestway;
 			}
-			System.out.println(this.getGlobalInterest(bestway));
+			System.out.println("ACO "+this.getGlobalInterest(bestway));
 			this.spreadPheromons(bestgen);
 		}
 		if(this.getGlobalInterest(bestway)>this.getGlobalInterest(bestAnt)) {
@@ -335,6 +338,7 @@ public class ScheduleQ {
 			int[] tab=this.communicateNights(observations);
 			Schedule sc= new Schedule(i, tab, data);
 			ants.add(sc);
+			System.out.println(i);
 		}
 		this.nb_ants = memory;
 		return ants;
@@ -378,5 +382,4 @@ public class ScheduleQ {
 		}
 		this.bestAnt = observations;
 	}
-	
 }

@@ -166,4 +166,8 @@ public class Genetic {
 	public void updateAlpha(Schedule newAlpha) {
 		pop.switchRandom(newAlpha);
 	}
+
+	public Population getPop() {
+		return this.pop;
+	}
 }
