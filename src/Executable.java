@@ -4,7 +4,7 @@ public class Executable {
 
 		Master sol = new Master("ins_400_71_1");
 		
-		sol.strat_2h_Adele1();
+		sol.strat_2m_ALL();
 
 	}
 }

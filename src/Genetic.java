@@ -86,6 +86,26 @@ public class Genetic {
 		}
 	}
 	
+	public Genetic(Etoile[] data, int popsize, LinkedList<Schedule> initpop) {
+		this.data = data;
+		this.taille_tournoi = 5;
+		this.taux_mutation = 0.015;
+		this.taux_uniforme = 0.5;
+		this.pop = new Population();
+		
+		Iterator<Schedule> ite = initpop.iterator();
+		while(ite.hasNext()) {
+			Schedule s = ite.next();
+			pop.addIndividual(s);
+		}
+		
+		for(int i = initpop.size(); i< popsize; i ++) {
+			Schedule newOne = this.breed(i);
+			//System.out.println(newOne.toString());
+			pop.addIndividual(newOne);
+		}
+	}
+	
 	public void changePop(LinkedList<Schedule> list) {
 		pop.clear();
 		Iterator<Schedule> i = list.iterator();

@@ -3,7 +3,7 @@ import java.util.*;
 
 
 /**
- * @author Sébastien
+ * @author Quentin
  * A class to represent a telescope schedule
  */
 public class ScheduleQ {
@@ -29,6 +29,7 @@ public class ScheduleQ {
 		this.nb_ants = pop;
 		this.organize();
 		this.setProbas();
+		this.bestAnt=this.fourmi();
 	}
 	
 	public void changePheromonsFadding(double rate) {
@@ -319,6 +320,12 @@ public class ScheduleQ {
 			this.bestAnt = bestway;
 		}
 	}
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Create a whole population of ants for the GA
@@ -334,12 +341,12 @@ public class ScheduleQ {
 		}
 		
 		for(int i=0;i<n;i++) {
-			LinkedList<Observation> observations= this.antAlgorithm(1);
+			LinkedList<Observation> observations= this.antAlgorithm(4);
 			int[] tab=this.communicateNights(observations);
 			Schedule sc= new Schedule(i, tab, data);
 			ants.add(sc);
-			System.out.println(i);
-		}
+			System.out.println(i+"ème fourmi OK");
+			}
 		this.nb_ants = memory;
 		return ants;
 	}

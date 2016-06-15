@@ -15,13 +15,10 @@ public class Master {
 	private LinkedList<Schedule> alphas;
 	
 	private Genetic GA;
-	private int GA_pop;
 	
 	private Recuit SA;
 	
 	private ScheduleQ ACO;
-	private int ACO_pop;
-	
 	
 	/**
 	 * Constructor of the Master class, initialize each representation
@@ -29,38 +26,19 @@ public class Master {
 	 */
 	public Master(String src) {
 		this.data = Filehandler.read(src);
+		this.alphas = new LinkedList<Schedule>();
 	}
 	
 	private void initGA(int pop) {
 		this.GA = new Genetic(data, pop);
-		this.GA_pop = pop;
 	}
 	
 	private void initACO(int pop) {
 		this.ACO = new ScheduleQ(data, pop);
-		this.ACO_pop = pop;
 	}
 	
 	private void initSA(Schedule indiv) {
 		this.SA = new Recuit(indiv);
-	}
-	
-	private void reinit() {
-		this.reinitGA();
-		this.reinitACO();
-		this.reinitSA(this.bestAlpha());
-	}
-	
-	private void reinitGA() {
-		this.GA = new Genetic(data,GA_pop);
-	}
-	
-	private void reinitSA(Schedule indiv) {
-		this.SA = new Recuit(indiv);
-	}
-	
-	private void reinitACO() {
-		this.ACO = new ScheduleQ(data, ACO_pop);
 	}
 	
 	private void GA_activate(double timeinH) {
@@ -86,8 +64,8 @@ public class Master {
 		ACO.live(timeinH);
 	}
 	
-	private void fromACOtoGA() {
-		this.GA.changePop(ACO.createAnts(GA_pop, false));
+	private void fromACOtoGA(int pop, int nb_fourmi) {
+		this.GA = new Genetic(data, pop, ACO.createAnts(nb_fourmi, false));
 	}
 	
 	private void fromACOtoSA() {
@@ -120,24 +98,46 @@ public class Master {
 		System.out.println("ACO & GA activated");
 			this.ACO_activate((float)40/60);
 			System.out.println("FromACOtoGA");
-			this.fromACOtoGA();
+			this.fromACOtoGA(100,10);
 				System.out.println("GA running");
 				this.GA_activate((double)40/60);
 				this.fromGAtoSA();
 					this.SA_activate((double)40/60);
 			
 		alphas.add(SA.getSchedule());
-		this.reinit();
 	}
 	
 	public void strat_2h_Adele2() {
 		this.initACO(100);
 			this.ACO_activate(0.5);
-			this.fromACOtoGA();
+			this.fromACOtoGA(100,10);
 				this.GA_activate(0.5);
 				this.fromGAtoSA();
 					this.SA_activate(1);
 		alphas.add(SA.getSchedule());
-		this.reinit();
+
+	}
+	
+	public void strat_2m_ALL() {
+		double temps_deb = System.currentTimeMillis();
+		int nb_fourmi;
+		if(this.data.length<=600) {
+			nb_fourmi = 10;
+			this.initACO(10);
+		} else {
+			nb_fourmi = 1;
+			this.initACO(1);
+		}
+		System.out.println("FromACOtoGA");
+		this.fromACOtoGA(100,nb_fourmi);
+		System.out.println("GA activate");
+		double temps_adele = (double)0.5/60;
+		double temps_ecoule = (System.currentTimeMillis()-temps_deb)/(3600*1000);
+		double temps_restant = (double)2/60-temps_adele-temps_ecoule;
+		this.GA_activate(temps_restant);
+		this.fromGAtoSA();
+		this.SA_activate((double)0.5/60);
+		
+		alphas.add(SA.getSchedule());
 	}
 }
