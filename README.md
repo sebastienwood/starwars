@@ -4,3 +4,5 @@ A simple program to compare performance of algorithms such as ACO, simulated ann
 Structure:  
   -rsc: all ressources including the instances to solve  
   -src: core  
+
+The project will not receive further update.
